@@ -1,0 +1,40 @@
+name: compute
+version: 1.0.0
+kind: ecu # Executable Code Unit
+
+description: ""
+
+contributors:
+  - name: Andrea Marino
+    email: am.marinoandrea@gmail.com
+  - name: Jingye Wang
+    email: wangjycode@gmail.com
+
+dependencies:
+  - python3
+  - python3-yaml
+
+install:
+  - apt install pipenv
+  - pipenv install --system --deploy
+
+files:
+  - Pipfile
+  - Pipfile.lock
+  - run.py
+  - actions/__init__.py
+  - actions/preprocess.py
+
+entrypoint:
+  kind: task
+  exec: run.py
+
+actions:
+  'preprocess':
+    command:
+      args:
+        - preprocess
+    input:
+    output:
+      - type: string
+        name: output
