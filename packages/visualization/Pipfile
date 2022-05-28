@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "*"
+numpy = "*"
+seaborn = "*" 
+matplotlib = "*" 
+missingno = "*" 
+wordcloud = "*" 
+nltk = "*"
+codecs="*"
+
+[dev-packages]
+pandas = "*"
+numpy = "*"
+seaborn = "*" 
+matplotlib = "*" 
+missingno = "*" 
+wordcloud = "*" 
+nltk = "*"
+codecs="*"
+
+[requires]
+python_version = "3.9"
