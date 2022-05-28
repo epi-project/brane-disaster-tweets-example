@@ -7,13 +7,14 @@ import sys
 
 import yaml
 
-from actions.preprocess import preprocess
+from actions.preprocess import clean, remove_stopwords, tokenize
 
 
 def run_action(cmd: str, input: any):
     return {
-        "preprocess": preprocess,
-        # TODO: define package structure
+        "clean": clean,
+        "tokenize": tokenize,
+        "remove_stopwords": remove_stopwords
     }[cmd](input)
 
 
