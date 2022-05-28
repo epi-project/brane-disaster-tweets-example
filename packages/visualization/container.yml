@@ -15,6 +15,7 @@ dependencies:
   - python3-yaml
 
 install:
+  - apt update && apt upgrade -y 
   - apt install -y pipenv
   - pipenv install --system --deploy
 

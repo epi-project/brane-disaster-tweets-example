@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-get_ipython().system('pip install pandas numpy seaborn matplotlib missingno wordcloud nltk pandas-profiling[notebook] lxml')
+# get_ipython().system('pip install pandas numpy seaborn matplotlib missingno wordcloud nltk pandas-profiling[notebook] lxml')
 import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
