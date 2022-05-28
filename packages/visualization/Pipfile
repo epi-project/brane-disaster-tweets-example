@@ -11,17 +11,10 @@ matplotlib = "*"
 missingno = "*" 
 wordcloud = "*" 
 nltk = "*"
-codecs="*"
 
 [dev-packages]
-pandas = "*"
-numpy = "*"
-seaborn = "*" 
-matplotlib = "*" 
-missingno = "*" 
-wordcloud = "*" 
-nltk = "*"
-codecs="*"
+flake8 = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.9"
