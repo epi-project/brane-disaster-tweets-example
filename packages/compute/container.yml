@@ -5,17 +5,16 @@ kind: ecu # Executable Code Unit
 description: ""
 
 contributors:
-  - name: Andrea Marino
-    email: am.marinoandrea@gmail.com
-  - name: Jingye Wang
-    email: wangjycode@gmail.com
+  - Andrea Marino <am.marinoandrea@gmail.com>
+  - Jingye Wang <wangjycode@gmail.com>
 
 dependencies:
   - python3
   - python3-yaml
 
 install:
-  - apt install pipenv
+  - apt update && apt upgrade -y
+  - apt install pipenv -y
   - pipenv install --system --deploy
 
 files:
@@ -30,11 +29,35 @@ entrypoint:
   exec: run.py
 
 actions:
-  'preprocess':
+  'clean':
     command:
       args:
-        - preprocess
+        - clean
     input:
+      - type: string
+        name: filepath
     output:
       - type: string
-        name: output
+        name: filepath
+
+  'tokenize':
+    command:
+      args:
+        - tokenize
+    input:
+      - type: string
+        name: filepath
+    output:
+      - type: string
+        name: filepath
+
+  'remove_stopwords':
+    command:
+      args:
+        - remove_stopwords
+    input:
+      - type: string
+        name: filepath
+    output:
+      - type: string
+        name: filepath
