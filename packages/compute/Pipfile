@@ -4,8 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pandas = "*"
+numpy = "*"
+sklearn = "*"
+nltk = "*"
+tqdm = "*"
+xgboost = "*"
 
 [dev-packages]
+flake8 = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.9"
