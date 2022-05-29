@@ -1,0 +1,42 @@
+name: visualization
+version: 1.0.0
+kind: ecu # Executable Code Unit
+
+description: ""
+
+contributors:
+  - name: Andrea Marino
+    email: am.marinoandrea@gmail.com
+  - name: Jingye Wang
+    email: wangjycode@gmail.com
+
+dependencies:
+  - python3
+  - python3-yaml
+
+install:
+  - apt update && apt upgrade -y 
+  - apt install -y pipenv
+  - pipenv install --system --deploy
+
+files:
+  - Pipfile
+  - Pipfile.lock
+  - run.py
+  - __init__.py
+  - visualization.py
+  - result.html
+
+entrypoint:
+  kind: task
+  exec: run.py
+
+actions:
+  visualization_action:
+    command:
+    input:
+      - type: string
+        name: input
+    output:
+      - type: string
+        name: output
