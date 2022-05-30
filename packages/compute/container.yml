@@ -22,7 +22,8 @@ files:
   - Pipfile.lock
   - run.py
   - actions/__init__.py
-  - actions/preprocess.py
+  - actions/model.py 
+  - actions/preprocess.py 
 
 entrypoint:
   kind: task
@@ -64,3 +65,51 @@ actions:
     output:
       - type: string
         name: filepath
+
+  'create_vectors':
+    command:
+      capture: marked
+      args:
+        - create_vectors
+    input:
+      - type: string
+        name: filepath_train_dataset
+      - type: string
+        name: filepath_test_dataset
+      - type: string
+        name: filepath_train_vectors
+      - type: string
+        name: filepath_test_vectors
+    output:
+      - type: integer
+        name: errcode
+
+  'train_model':
+    command:
+      capture: marked
+      args:
+        - train_model
+    input:
+      - type: string
+        name: filepath_dataset
+      - type: string
+        name: filepath_vectors
+    output:
+      - type: string
+        name: filepath_model
+
+  'create_submission':
+    command:
+      capture: marked
+      args:
+        - create_submission
+    input:
+      - type: string
+        name: filepath_dataset
+      - type: string
+        name: filepath_vectors
+      - type: string
+        name: filepath_model
+    output:
+      - type: string
+        name: filepath_submission

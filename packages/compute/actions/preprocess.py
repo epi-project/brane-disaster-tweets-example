@@ -1,9 +1,11 @@
 import ast
+import pickle
 import re
 from typing import List
 
 import nltk
 import pandas as pd
+import sklearn
 
 # download preprocessing assets (corpus and word lists)
 nltk.download('stopwords')
@@ -32,7 +34,7 @@ def clean(dataset_path: str) -> str:
     `str` The path for the clean version of the dataset in the DFS.
     """
     def _remove_unused(text: str):
-        clean_data = text.lower()
+        clean_data = text.lower().strip()
         clean_data = re.sub(
             r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
             " ", clean_data)
@@ -118,7 +120,6 @@ def remove_stopwords(dataset_path: str) -> str:
         "text": str,
         "text_stemmed": str,
         "text_lemmatized": str,
-        "tokens": str,  # this list will be converted by Python AST
     }
 
     if "train" in dataset_path:
@@ -137,3 +138,70 @@ def remove_stopwords(dataset_path: str) -> str:
     df["tokens"] = df["tokens"].apply(_rm_stopwords)
     df.to_csv(f"/data/{new_path}")
     return new_path
+
+
+def create_vectors(
+    dataset_path_train: str, dataset_path_test: str,
+    vectors_path_train: str, vectors_path_test: str
+) -> int:
+    """
+    Converts the raw dataset tweets to token-count vectors. The
+    dictionary used for the frequencies is based on the training data.
+
+    Parameters
+    ----------
+    dataset_path_train: `str`
+    The preprocessed training dataset CSV/TSV path in the distributed
+    file system.
+
+    dataset_path_test: `str`
+    The preprocessed testing dataset CSV/TSV path in the distributed
+    file system.
+
+    vectors_path_train: `str`
+    The final location for training vectors in the distributed
+    file system where the binary file will be stored.
+
+    vectors_path_test: `str`
+    The final location for testing vectors in the distributed
+    file system where the binary file will be stored.
+
+    Returns
+    -------
+    `int` Error code (success = 0, failure >= 1)
+    """
+    dtypes = {
+        "id": int,
+        "keyword": str,
+        "location": str,
+        "text": str,
+        "text_stemmed": str,
+        "text_lemmatized": str,
+    }
+
+    df_train = pd.read_csv(
+        f"/data/{dataset_path_train}",
+        index_col="id",
+        dtype={**dtypes, "target": int},
+        converters={"tokens": ast.literal_eval})
+    df_train["text_preprocessed"] = df_train["tokens"].apply(
+        lambda x: " ".join(x))
+
+    df_test = pd.read_csv(
+        f"/data/{dataset_path_test}",
+        index_col="id",
+        dtype=dtypes,
+        converters={"tokens": ast.literal_eval})
+    df_test["text_preprocessed"] = df_test["tokens"].apply(
+        lambda x: " ".join(x))
+
+    vectorizer = sklearn.feature_extraction.text.CountVectorizer()
+    vectors_train = vectorizer.fit_transform(df_train["text_preprocessed"])
+    vectors_test = vectorizer.transform(df_test["text_preprocessed"])
+
+    with open(f"/data/{vectors_path_train}", "wb") as f:
+        pickle.dump(vectors_train, f)
+    with open(f"/data/{vectors_path_test}", "wb") as f:
+        pickle.dump(vectors_test, f)
+
+    return 0
