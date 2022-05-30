@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: GitHub
+  version: 1.0.0
+
+servers:
+  - url: https://api.github.com
+
+# NOTE: we eventually did not use this OpenAPI container as there
+# is no way to pass large variables to package actions from BraneScript.
+# See https://webservicesan-xt84834.slack.com/archives/C03G3PVBM97/p1653903945750199
+paths:
+  # this path is a utility to download any file from a GitHub repository
+  # directly from the main branch
+  '/repos/{owner}/{repo}/contents/{path}?ref=main':
+    get:
+      operationId: getfilecontent
+      parameters:
+        - name: owner
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: repo
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: File content base64 encoded with metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - content
+                properties:
+                  name:
+                    type: string
+                  content:
+                    type: string
+                  path: 
+                    type: string
+                  sha:
+                    type: string
+                  size:
+                    type: string
+                  url:
+                    type: string
+                  'html_url':
+                    type: string
+                  'git_url':
+                    type: string
+                  'download_url':
+                    type: string
+                  type:
+                    type: string
+                  encoding:
+                    type: string
