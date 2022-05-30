@@ -1,0 +1,35 @@
+import compute;
+import utils;
+
+let repo_owner := "marinoandrea";
+let repo_name := "disaster-tweets-brane";
+
+// repository dataset locations
+let repo_dataset_filepath_test := "data/test.csv";
+let repo_dataset_filepath_train := "data/train.csv";
+
+// distributed filesystem dataset locations excluding 'data' prefix
+let dfs_dataset_filepath_test := "test.csv";
+let dfs_dataset_filepath_train := "train.csv";
+
+// download and store dataset in the distributed filesystem
+if (download(repo_owner, repo_name, repo_dataset_filepath_train, dfs_dataset_filepath_train) != 0) { 
+    // TODO: handle failure
+    print("Train dataset download failed.");
+}
+if (download(repo_owner, repo_name, repo_dataset_filepath_test, dfs_dataset_filepath_test) != 0) { 
+    // TODO: handle failure
+    print("Test dataset download failed.");
+}
+
+// cleaning the dataset text
+let path_dataset_clean_train := clean(dfs_dataset_filepath_train);
+let path_dataset_clean_test := clean(dfs_dataset_filepath_test);
+
+// obtain tokens from raw text
+let path_dataset_tokenized_train := tokenize(path_dataset_clean_train);
+let path_dataset_tokenized_test := tokenize(path_dataset_clean_test);
+
+// remove english stopwords
+let path_dataset_nostopwords_train := remove_stopwords(path_dataset_tokenized_train);
+let path_dataset_nostopwords_test := remove_stopwords(path_dataset_tokenized_test);

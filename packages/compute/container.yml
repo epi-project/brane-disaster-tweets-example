@@ -31,6 +31,7 @@ entrypoint:
 actions:
   'clean':
     command:
+      capture: marked
       args:
         - clean
     input:
@@ -42,6 +43,7 @@ actions:
 
   'tokenize':
     command:
+      capture: marked
       args:
         - tokenize
     input:
@@ -53,6 +55,7 @@ actions:
 
   'remove_stopwords':
     command:
+      capture: marked
       args:
         - remove_stopwords
     input:
