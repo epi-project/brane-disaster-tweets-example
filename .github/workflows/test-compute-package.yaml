@@ -26,8 +26,9 @@ jobs:
         working-directory: ./packages/compute
         run: |
           sudo apt update && sudo apt upgrade -y
-          sudo apt install pipenv -y
+          sudo apt install pipenv -y 
           pipenv install --system --deploy --dev
+          pip install pyyaml
       - name: Lint with flake8
         working-directory: ./packages/compute
         run: |
