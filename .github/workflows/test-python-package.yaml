@@ -24,8 +24,8 @@ jobs:
         run: python -c "import sys; print(sys.version)"
       - name: Install dependencies
         run: |
-          apt update && apt upgrade -y
-          apt install pipenv -y
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install pipenv -y
           pipenv install --system --deploy
       - name: Lint with flake8
         run: |
