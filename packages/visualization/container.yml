@@ -36,7 +36,9 @@ actions:
     command:
     input:
       - type: string
-        name: input
+        name: filepath_test_dataset
+      - type: string
+        name: filepath_sub_dataset
     output:
       - type: string
         name: output
