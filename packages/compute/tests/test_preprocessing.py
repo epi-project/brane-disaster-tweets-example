@@ -11,7 +11,7 @@ class TestPreprocessing(unittest.TestCase):
     @mock.patch("builtins.open", mock_open)
     @mock.patch("pandas.DataFrame.to_csv", mock_to_csv)
     def test_clean_urls(self):
-        result = clean("dataset_train_raw_http.csv")
+        result = clean("dataset_raw_http.csv")
         with open(result, "r") as f:
             tweets = list(map(
                 lambda x: x.split(',')[-1].strip(), f.readlines()[1:]))
@@ -22,7 +22,7 @@ class TestPreprocessing(unittest.TestCase):
     @mock.patch("builtins.open", mock_open)
     @mock.patch("pandas.DataFrame.to_csv", mock_to_csv)
     def test_clean_tags(self):
-        result = clean("dataset_train_raw_tags.csv")
+        result = clean("dataset_raw_tags.csv")
         with open(result, "r") as f:
             tweets = list(map(
                 lambda x: x.split(',')[-1].strip(), f.readlines()[1:]))
@@ -32,7 +32,7 @@ class TestPreprocessing(unittest.TestCase):
     @mock.patch("builtins.open", mock_open)
     @mock.patch("pandas.DataFrame.to_csv", mock_to_csv)
     def test_clean_usernames(self):
-        result = clean("dataset_train_raw_usernames.csv")
+        result = clean("dataset_raw_usernames.csv")
         with open(result, "r") as f:
             tweets = list(map(
                 lambda x: x.split(',')[-1].strip(), f.readlines()[1:]))
@@ -42,7 +42,7 @@ class TestPreprocessing(unittest.TestCase):
     @mock.patch("builtins.open", mock_open)
     @mock.patch("pandas.DataFrame.to_csv", mock_to_csv)
     def test_tokenize(self):
-        result = tokenize("dataset_train_raw_lemmas.csv")
+        result = tokenize("dataset_raw_lemmas.csv")
         with open(result, "r") as f:
             tokens = list(map(
                 lambda x: ast.literal_eval(
@@ -56,7 +56,7 @@ class TestPreprocessing(unittest.TestCase):
     @mock.patch("builtins.open", mock_open)
     @mock.patch("pandas.DataFrame.to_csv", mock_to_csv)
     def test_remove_stopwords(self):
-        tokenized = tokenize("dataset_train_raw_lemmas.csv")
+        tokenized = tokenize("dataset_raw_lemmas.csv")
         result = remove_stopwords(tokenized)
         with open(result, "r") as f:
             tokens = list(map(

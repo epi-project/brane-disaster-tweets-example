@@ -20,6 +20,7 @@ install:
 files:
   - Pipfile
   - Pipfile.lock
+  - __init__.py
   - run.py
   - actions/__init__.py
   - actions/model.py 
