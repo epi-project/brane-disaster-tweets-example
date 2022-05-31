@@ -24,7 +24,9 @@ def visualization_action(filepath_test_dataset,filepath_sub_dataset):
     -------
     `str` The result of the process.
     """
-    
+    # for filename in os.listdir(filepath_test_dataset):
+    #     print(filename)
+        
     sub_data = pd.read_csv(filepath_test_dataset)
     test_data = pd.read_csv(filepath_sub_dataset)
 
@@ -51,7 +53,7 @@ def visualization_action(filepath_test_dataset,filepath_sub_dataset):
 
 
 if __name__ == '__main__':
-    filepath_test_dataset = os.environ["FILEPATH_TEST_DATASET"]
-    filepath_sub_dataset = os.environ["FILEPATH_SUB_DATASET"]
+    filepath_test_dataset = "/data/"+os.environ["FILEPATH_TEST_DATASET"]
+    filepath_sub_dataset = "/data/"+os.environ["FILEPATH_SUB_DATASET"]
     output = visualization_action(filepath_test_dataset,filepath_sub_dataset)
     print(yaml.dump({"output": output}))

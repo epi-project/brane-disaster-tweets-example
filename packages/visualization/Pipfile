@@ -5,12 +5,10 @@ name = "pypi"
 
 [packages]
 pandas = "*"
-numpy = "*"
-seaborn = "*" 
 matplotlib = "*" 
-missingno = "*" 
 wordcloud = "*" 
 nltk = "*"
+pandas-profiling = "*"
 
 [dev-packages]
 flake8 = "*"
