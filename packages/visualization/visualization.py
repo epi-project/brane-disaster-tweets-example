@@ -299,8 +299,13 @@ def plot_bigrams_distribution(
         x.append(word)
         y.append(count)
     fig = plt.figure(figsize=(25, 12))
-    sns.barplot(x=y, y=x, color="blue", palette="pastel")
-
+    
+    p = sns.barplot(x=y, y=x, color="blue", palette="pastel")
+    p.set_xlabel("X-Axis", fontsize = 40)
+    p.set_ylabel("Y-Axis", fontsize = 40)
+    plt.xticks(fontsize=30)
+    plt.yticks(fontsize=30)
+    
     plt.ylabel("Bi-grams")
     plt.xlabel("Occurrences")
 
