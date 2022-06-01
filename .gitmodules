@@ -1,0 +1,9 @@
+[submodule "utils"]
+	path = packages/disaster-tweets-brane-utils
+	url = https://github.com/jywangTG/disaster-tweets-brane-utils.git
+[submodule "visualization"]
+	path = packages/disaster-tweets-brane-visualization
+	url = https://github.com/jywangTG/disaster-tweets-brane-visualization.git
+[submodule "computation"]
+	path = packages/disaster-tweets-brane-computation
+	url = https://github.com/jywangTG/disaster-tweets-brane-computation.git
