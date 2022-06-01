@@ -5,10 +5,8 @@ kind: ecu # Executable Code Unit
 description: ""
 
 contributors:
-  - name: Andrea Marino
-    email: am.marinoandrea@gmail.com
-  - name: Jingye Wang
-    email: wangjycode@gmail.com
+  - Andrea Marino <am.marinoandrea@gmail.com>
+  - Jingye Wang <wangjycode@gmail.com>
 
 dependencies:
   - python3
@@ -34,6 +32,9 @@ entrypoint:
 actions:
   visualization_action:
     command:
+      capture: marked
+      args:
+        - visualization_action
     input:
       - type: string
         name: filepath_test_dataset
@@ -42,3 +43,17 @@ actions:
     output:
       - type: string
         name: output
+
+  plot_bigrams_distribution:
+    command:
+      capture: marked
+      args:
+        - plot_bigrams_distribution
+    input:
+      - type: string
+        name: filepath_dataset
+      - type: integer
+        name: n_top_bigrams
+    output:
+      - type: string
+        name: filepath_image

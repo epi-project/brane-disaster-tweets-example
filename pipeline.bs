@@ -62,9 +62,16 @@ let path_submission := create_submission(
     dfs_vectors_filepath_train, 
     path_model);
 
+// creating bigrams information
+print("Generating bigrams...");
+let path_dataset_bigrams_train := generate_bigrams(path_dataset_nostopwords_train);
+
+// plotting bigrams information
+print("Plotting bigrams data...");
+plot_bigrams_distribution(path_dataset_bigrams_train, 15);
 
 // generate the visualization
-print("generating visualization...");
+print("Generating visualizations...");
 let result := visualization_action(
     dfs_dataset_filepath_test,
     path_submission);

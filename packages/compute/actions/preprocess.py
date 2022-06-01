@@ -1,6 +1,7 @@
 import ast
 import pickle
 import re
+import string
 from typing import List
 
 import nltk
@@ -205,3 +206,48 @@ def create_vectors(
         pickle.dump(vectors_test, f)
 
     return 0
+
+
+def generate_bigrams(dataset_path: str) -> str:
+    """
+    Generates bi-gram information for each tweet.
+
+    Parameters
+    ----------
+    dataset_path: `str`
+    The dataset CSV/TSV path in the distributed file system.
+    It expects a dataset with a 'text' column which contains strings.
+
+    Returns
+    -------
+    `str`
+    The path for the new version of the dataset (with bigrams) in the DFS.
+    """
+    dtypes = {
+        "id": int,
+        "keyword": str,
+        "location": str,
+        "text": str,
+    }
+
+    if "train" in dataset_path:
+        dtypes["target"] = int
+
+    def _make_string_bigrams(tokens: List[str]) -> List[str]:
+        bigrams = list(nltk.bigrams(tokens))
+        out: List[str] = []
+        for b in bigrams:
+            out.append(f"{b[0]}_{b[1]}")
+        return out
+
+    new_path = _make_new_filepath(dataset_path, "bigrams")
+    df = pd.read_csv(
+        f"/data/{dataset_path}",
+        index_col="id",
+        dtype=dtypes,
+        converters={"tokens": ast.literal_eval})
+
+    df["bigrams"] = df["tokens"].apply(_make_string_bigrams)
+    df.to_csv(f"/data/{new_path}")
+
+    return new_path

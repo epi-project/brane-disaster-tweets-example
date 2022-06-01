@@ -114,3 +114,15 @@ actions:
     output:
       - type: string
         name: filepath_submission
+
+  'generate_bigrams':
+    command:
+      capture: marked
+      args:
+        - generate_bigrams
+    input:
+      - type: string
+        name: filepath
+    output:
+      - type: string
+        name: filepath

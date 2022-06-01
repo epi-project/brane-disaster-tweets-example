@@ -8,8 +8,8 @@ import sys
 import yaml
 
 from actions.model import create_submission, train_model
-from actions.preprocess import (clean, create_vectors, remove_stopwords,
-                                tokenize)
+from actions.preprocess import (clean, create_vectors, generate_bigrams,
+                                remove_stopwords, tokenize)
 
 
 def run_dataset_action(cmd: str, filepath: str):
@@ -17,6 +17,7 @@ def run_dataset_action(cmd: str, filepath: str):
         "clean": clean,
         "tokenize": tokenize,
         "remove_stopwords": remove_stopwords,
+        "generate_bigrams": generate_bigrams,
     }[cmd](filepath)
 
 

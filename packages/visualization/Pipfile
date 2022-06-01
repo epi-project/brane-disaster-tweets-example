@@ -9,6 +9,7 @@ matplotlib = "*"
 wordcloud = "*" 
 nltk = "*"
 pandas-profiling = "*"
+seaborn = "*"
 
 [dev-packages]
 flake8 = "*"
