@@ -324,19 +324,22 @@ def generate_prediction_plot(
     return "prediction_plot.png"
 
 def generate_location_profile(dataset_path: str, n_top: int = 10) -> str: 
-    data = pd.read_csv(dataset_path)
+    data = pd.read_csv(dataset_path,
+        converters={"tokens": ast.literal_eval})
     location_profile(data,True,n_top)
     
     return "/data/location_profile"
 
 def generate_tweets_profile(dataset_path: str, n_top: int = 10) -> str: 
-    data = pd.read_csv(dataset_path)
+    data = pd.read_csv(dataset_path,
+        converters={"tokens": ast.literal_eval})
     tweets_profile(data,True,n_top)
     
     return "/data/tweets_profile"
 
 def generate_keywords_profile(dataset_path: str, n_top: int = 10) -> str:
-    data = pd.read_csv(dataset_path)
+    data = pd.read_csv(dataset_path,
+        converters={"tokens": ast.literal_eval})
     keywords_profile(data,True,n_top)
     
     return "/data/keywords_profile"
