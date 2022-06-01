@@ -14,7 +14,7 @@
         <h1 class="text-center">Data Profile Report</h1>
     </div>
     <div class="d-flex align-items-start">
-        <nav id="navbar-example3" class="navbar bg-light flex-column align-items-stretch p-3" style="position: fixed;">
+        <nav id="navbar-example3" class="navbar bg-light flex-column align-items-stretch p-3" style="position: fixed;overflow: auto;height: 750px;">
             <nav class="nav nav-pills flex-column">
                 <a class="nav-link" href="#item-1">Prediction Overview</a>
                 <a class="nav-link" href="#item-4">Disaster Location Top10</a>
@@ -23,11 +23,11 @@
                     <a class="nav-link ms-3 my-1" href="#item-3-1">Tweets Text Word Cloud</a>
                     <a class="nav-link ms-3 my-1" href="#item-3-2">Tweets Text Top30</a>
 
-                    <a class="nav-link ms-3 my-1" href="#item-3-1">Disaster Tweets Text Word Cloud</a>
-                    <a class="nav-link ms-3 my-1" href="#item-3-2">Disaster Tweets Text Top30</a>
+                    <a class="nav-link ms-3 my-1" href="#item-3-3">Disaster Tweets Text Word Cloud</a>
+                    <a class="nav-link ms-3 my-1" href="#item-3-4">Disaster Tweets Text Top30</a>
 
-                    <a class="nav-link ms-3 my-1" href="#item-3-1">Non DisasterTweets Text Word Cloud</a>
-                    <a class="nav-link ms-3 my-1" href="#item-3-2">Non Disaster Tweets Text Top30</a>
+                    <a class="nav-link ms-3 my-1" href="#item-3-5">Non DisasterTweets Text Word Cloud</a>
+                    <a class="nav-link ms-3 my-1" href="#item-3-6">Non Disaster Tweets Text Top30</a>
 
                 </nav>
                 <a class="nav-link" href="#item-2">Keywords</a>
@@ -39,7 +39,7 @@
                     <a class="nav-link ms-3 my-1" href="#item-2-5">Non Disaster Keywords Word Cloud</a>
                     <a class="nav-link ms-3 my-1" href="#item-2-6">Non Disaster Keywords Top30</a>
                 </nav>
-
+                <a class="nav-link" href="#item-5">Bi-grams For Tweets</a>
             </nav>
         </nav>
 
@@ -100,13 +100,18 @@
                 <h6>Disaster Keywords Top30</h6>
                 <div class="text-center">{disaster_keywords_top30}</div>
             </div>
-            <div id="item-2-3" class="text-center">
+            <div id="item-2-5" class="text-center">
                 <h6>Non Disaster Keywords Word Cloud</h6>
                 <div class="text-center">{non_disaster_keywords_word_cloud}</div>
             </div>
-            <div id="item-2-4" class="text-center">
+            <div id="item-2-6" class="text-center">
                 <h6>Non Disaster Keywords Top30</h6>
                 <div class="text-center">{non_disaster_keywords_top30}</div>
+            </div>
+
+            <div id="item-5" class="text-center">
+                <h6>Bi-grams For Tweets</h6>
+                <div class="text-center">{bigrams_img}</div>
             </div>
         </div>
         <nav>

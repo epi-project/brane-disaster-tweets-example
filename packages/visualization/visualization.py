@@ -4,17 +4,14 @@ import io
 from typing import Counter
 
 import matplotlib.pyplot as plt
-import nltk
 import pandas as pd
 import seaborn as sns
 from wordcloud import WordCloud
 
-nltk.download('stopwords')
-
 sns.set_theme(style="whitegrid")
 
 
-def keywords_word_cloud(data):
+def keywords_word_cloud(data,path="",isStore=False):
     """
     Generate a picture of Keywords word cloud
 
@@ -34,11 +31,13 @@ def keywords_word_cloud(data):
     plt.imshow(wordcloud)
     plt.axis("off")
     plt.tight_layout(pad=0)
-
+    if(isStore):
+        plt.savefig(path,
+        dpi=300, bbox_inches="tight")
     return fig_to_base64(fig)
 
 
-def tweets_wordcloud(data):
+def tweets_wordcloud(data,path,isStore=False):
     """
     Generate a word cloud based on the word in the tweets after the stop word removal and text cleaning.
 
@@ -54,17 +53,19 @@ def tweets_wordcloud(data):
     fig = plt.figure(figsize=(20, 20), facecolor=None)
     wordcloud = WordCloud(background_color='white')\
         .generate_from_frequencies(
-            pd.Series(' '.join(data["token_data"]).split())
+            pd.Series(' '.join(data["tokens"].apply(lambda x: " ".join(x))).split())
         .value_counts(sort=True, dropna=True).to_dict())
     # plot the WordCloud image
     plt.imshow(wordcloud)
     plt.axis("off")
     plt.tight_layout(pad=0)
-
+    if(isStore):
+        plt.savefig(path,
+        dpi=300, bbox_inches="tight")
     return fig_to_base64(fig)
 
 
-def draw_plot(data, n):
+def draw_plot(data, n,path,isStore=False):
     """
     Generate a top n frequency plot based on the data.
 
@@ -83,10 +84,12 @@ def draw_plot(data, n):
     data.value_counts(sort=True).nlargest(n).plot.bar()
     plt.tight_layout(pad=0)
     plt.xticks(fontproperties='Times New Roman', size=40)
+    if(isStore):
+        plt.savefig(path,dpi=300, bbox_inches="tight")
     return fig_to_base64(fig)
 
 
-def prediction_plot(data):
+def prediction_plot(data,isStore=False):
     """
     Generate a pie chart based on the submission result.
 
@@ -106,10 +109,13 @@ def prediction_plot(data):
                   wedgeprops={'linewidth': 3.0, 'edgecolor': 'white'},
                   textprops={'size': 'x-large'}, startangle=90,
                   explode=(0, 0.1))
+    if(isStore):
+        plt.savefig("/data/prediction_plot.png",
+        dpi=300, bbox_inches="tight")
     return fig_to_base64(fig)
 
 
-def keywords_profile(data):
+def keywords_profile(data,isStore=False, n_top: int = 10):
     """
     Integrates the tweets keywords word cloud and word counts plot
 
@@ -128,18 +134,18 @@ def keywords_profile(data):
     """
 
     # the overall data word frequency plot and word cloud
-    image_tweets_plot = draw_plot(data['keyword'], 10)
-    image_tweets_word_cloud = keywords_word_cloud(data)
+    image_tweets_plot = draw_plot(data['keyword'], n_top,"/data/keywords_profile/keywords_plot.png",isStore)
+    image_tweets_word_cloud = keywords_word_cloud(data,"/data/keywords_profile/keywords_word_cloud.png",isStore)
 
     # the disaster data word frequency plot and word cloud
     disaster_data = data[data['target'] == 1]
-    image_dis_tweets_plot = draw_plot(disaster_data['keyword'], 10)
-    image_dis_tweets_word_cloud = keywords_word_cloud(disaster_data)
+    image_dis_tweets_plot = draw_plot(disaster_data['keyword'], n_top,"/data/keywords_profile/disaster_keywords_plot.png",isStore)
+    image_dis_tweets_word_cloud = keywords_word_cloud(disaster_data,"/data/keywords_profile/disaster_keywords_word_cloud.png",isStore)
 
     # the non-disaster data word frequency plot and word cloud
     non_disaster_data = data[data['target'] == 0]
-    image_no_dis_tweets_plot = draw_plot(non_disaster_data['keyword'], 10)
-    image_no_dis_tweets_word_cloud = keywords_word_cloud(non_disaster_data)
+    image_no_dis_tweets_plot = draw_plot(non_disaster_data['keyword'], n_top,"/data/keywords_profile/non_disaster_keywords_plot.png",isStore)
+    image_no_dis_tweets_word_cloud = keywords_word_cloud(non_disaster_data,"/data/keywords_profile/non_disaster_keywords_word_cloud.png",isStore)
     return [
         image_tweets_plot,
         image_tweets_word_cloud,
@@ -150,7 +156,7 @@ def keywords_profile(data):
     ]
 
 
-def tweets_profile(data):
+def tweets_profile(data,isStore=False, n_top: int = 10):
     """
     Integrates the tweets word cloud and tweets word counts plot
 
@@ -169,20 +175,20 @@ def tweets_profile(data):
     """
     # the overall data word frequency plot and word cloud
     image_tweets_plot = draw_plot(
-        pd.Series(' '.join(data["tokens"]).split()), 10)
-    image_tweets_word_cloud = tweets_wordcloud(data)
+        pd.Series(' '.join(data["tokens"].apply(lambda x: " ".join(x))).split()), n_top,"/data/tweets_profile/tweets_plot.png",isStore)
+    image_tweets_word_cloud = tweets_wordcloud(data,"/data/tweets_profile/tweets_word_cloud.png",isStore)
 
     # the disaster data word frequency plot and word cloud
     disaster_data = data[data['target'] == 1]
     image_dis_tweets_plot = draw_plot(
-        pd.Series(' '.join(disaster_data["tokens"]).split()), 10)
-    image_dis_tweets_word_cloud = tweets_wordcloud(disaster_data)
+        pd.Series(' '.join(disaster_data["tokens"].apply(lambda x: " ".join(x))).split()), n_top,"/data/tweets_profile/disaster_tweets_plot.png",isStore)
+    image_dis_tweets_word_cloud = tweets_wordcloud(disaster_data,"/data/tweets_profile/disaster_tweets_word_cloud.png",isStore)
 
     # the non-disaster data word frequency plot and word cloud
     non_disaster_data = data[data['target'] == 0]
     image_no_dis_tweets_plot = draw_plot(
-        pd.Series(' '.join(non_disaster_data["tokens"]).split()), 10)
-    image_no_dis_tweets_word_cloud = tweets_wordcloud(non_disaster_data)
+        pd.Series(' '.join(non_disaster_data["tokens"].apply(lambda x: " ".join(x))).split()), n_top,"/data/tweets_profile/non_disaster_tweets_plot.png",isStore)
+    image_no_dis_tweets_word_cloud = tweets_wordcloud(non_disaster_data,"/data/tweets_profile/non_disaster_tweets_word_cloud.png",isStore)
     return [
         image_tweets_plot,
         image_tweets_word_cloud,
@@ -193,7 +199,7 @@ def tweets_profile(data):
     ]
 
 
-def location_profile(data):
+def location_profile(data,isStore=False,n_top=10):
     """
     Generate a plot that the top 10 counts of the dataset
 
@@ -215,7 +221,7 @@ def location_profile(data):
     loc_disaster = disaster_data["location"].str.replace('\$\$', '\\$\\$').apply(
         lambda x: x if (x not in location_map) else location_map.get(x))
 
-    return draw_plot(loc_disaster, 10)
+    return draw_plot(loc_disaster, n_top,"/data/location_profile/loc_disaster.png",isStore)
 
 
 def fig_to_base64(fig):
@@ -241,7 +247,7 @@ def fig_to_base64(fig):
 
 
 def plot_bigrams_distribution(
-    dataset_path: str, n_top_bigrams: int = 15
+    dataset_path: str, n_top_bigrams: int = 15,isStore=False
 ) -> str:
     """
     Plots the bigrams occurence distribution given a dataset
@@ -269,8 +275,16 @@ def plot_bigrams_distribution(
         "target": int,
     }
 
+    # df = pd.read_csv(
+    #     f"/data/{dataset_path}",
+    #     index_col="id",
+    #     dtype=dtypes,
+    #     converters={
+    #         "tokens": ast.literal_eval,
+    #         "bigrams": ast.literal_eval})
+    
     df = pd.read_csv(
-        f"/data/{dataset_path}",
+        f"{dataset_path}",
         index_col="id",
         dtype=dtypes,
         converters={
@@ -284,15 +298,45 @@ def plot_bigrams_distribution(
     for word, count in most[:15]:
         x.append(word)
         y.append(count)
-
+    fig = plt.figure(figsize=(25, 12))
     sns.barplot(x=y, y=x, color="blue", palette="pastel")
 
     plt.ylabel("Bi-grams")
     plt.xlabel("Occurrences")
 
-    plt.savefig(
-        "/data/bigrams_distribution.png",
-        dpi=300, bbox_inches="tight")
-    plt.close()
+    if(not isStore):
+        return fig_to_base64(fig)
+    else:
+        plt.savefig(
+            "/data/bigrams_distribution.png",
+            dpi=300, bbox_inches="tight")
+        plt.close()
+        return "bigrams_distribution.png"
 
-    return "bigrams_distribution.png"
+def generate_prediction_plot(
+            filepath_test_dataset: str, filepath_sub_dataset: str) -> str:
+    sub_data = pd.read_csv(filepath_test_dataset)
+    test_data = pd.read_csv(filepath_sub_dataset)
+    predict_data = pd.merge(sub_data, test_data, on="id")
+
+    prediction_plot(predict_data,True)
+    
+    return "prediction_plot.png"
+
+def generate_location_profile(dataset_path: str, n_top: int = 10) -> str: 
+    data = pd.read_csv(dataset_path)
+    location_profile(data,True,n_top)
+    
+    return "/data/location_profile"
+
+def generate_tweets_profile(dataset_path: str, n_top: int = 10) -> str: 
+    data = pd.read_csv(dataset_path)
+    tweets_profile(data,True,n_top)
+    
+    return "/data/tweets_profile"
+
+def generate_keywords_profile(dataset_path: str, n_top: int = 10) -> str:
+    data = pd.read_csv(dataset_path)
+    keywords_profile(data,True,n_top)
+    
+    return "/data/keywords_profile"
