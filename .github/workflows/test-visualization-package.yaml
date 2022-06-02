@@ -1,4 +1,4 @@
-name: Test Compute Package
+name: Test Visualization Package
 
 on: [push]
 
@@ -37,7 +37,7 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test and Coverage
-        working-directory: ./packages/compute
+        working-directory: ./packages/visualization
         run: |
           pip install pytest
           pytest

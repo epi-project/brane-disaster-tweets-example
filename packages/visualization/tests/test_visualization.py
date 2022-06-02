@@ -4,7 +4,7 @@ import os
 from unittest import mock
 import shutil
 import pandas as pd
-from visualization import plot_bigrams_distribution,location_profile,prediction_plot,tweets_profile,keywords_profile
+from ..visualization import plot_bigrams_distribution,location_profile,prediction_plot,tweets_profile,keywords_profile
 from .mock_data import mock_open
 
 
