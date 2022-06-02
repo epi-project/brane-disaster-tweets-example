@@ -70,10 +70,28 @@ let path_dataset_bigrams_train := generate_bigrams(path_dataset_nostopwords_trai
 print("Plotting bigrams data...");
 plot_bigrams_distribution(path_dataset_bigrams_train, 15);
 
+// plotting prediction information
+print("Plotting prediction data...");
+generate_prediction_plot(path_dataset_clean_test, path_submission);
+
+// plotting locations information
+print("Plotting locations data...");
+generate_location_profile(path_dataset_nostopwords_train, 10);
+
+// plotting tweets text information
+print("Plotting tweets text data...");
+generate_tweets_profile(path_dataset_nostopwords_train, 15);
+
+// plotting keywords information
+print("Plotting keywords data...");
+generate_keywords_profile(path_dataset_nostopwords_train, 15);
+
 // generate the visualization
 print("Generating visualizations...");
 let result := visualization_action(
-    dfs_dataset_filepath_test,
-    path_submission);
+    path_dataset_nostopwords_test,
+    path_dataset_nostopwords_train,
+    path_submission,
+    path_dataset_bigrams_train);
 
 print("Done");

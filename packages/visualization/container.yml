@@ -39,7 +39,69 @@ actions:
       - type: string
         name: filepath_test_dataset
       - type: string
+        name: filepath_train_dataset
+      - type: string
         name: filepath_sub_dataset
+      - type: string
+        name: filepath_bigrams_dataset
+    output:
+      - type: string
+        name: output
+  
+
+  generate_prediction_plot:
+    command:
+      capture: marked
+      args:
+        - generate_prediction_plot
+    input:
+      - type: string
+        name: filepath_test_dataset
+      - type: string
+        name: filepath_sub_dataset
+    output:
+      - type: string
+        name: output
+  
+
+  generate_location_profile:
+    command:
+      capture: marked
+      args:
+        - generate_location_profile
+    input:
+      - type: string
+        name: filepath_dataset
+      - type: integer
+        name: n_top
+    output:
+      - type: string
+        name: output
+
+  generate_tweets_profile:
+    command:
+      capture: marked
+      args:
+        - generate_tweets_profile
+    input:
+      - type: string
+        name: filepath_dataset
+      - type: integer
+        name: n_top
+    output:
+      - type: string
+        name: output
+
+  generate_keywords_profile:
+    command:
+      capture: marked
+      args:
+        - generate_keywords_profile
+    input:
+      - type: string
+        name: filepath_dataset
+      - type: integer
+        name: n_top
     output:
       - type: string
         name: output
