@@ -275,16 +275,8 @@ def plot_bigrams_distribution(
         "target": int,
     }
 
-    # df = pd.read_csv(
-    #     f"/data/{dataset_path}",
-    #     index_col="id",
-    #     dtype=dtypes,
-    #     converters={
-    #         "tokens": ast.literal_eval,
-    #         "bigrams": ast.literal_eval})
-    
     df = pd.read_csv(
-        f"{dataset_path}",
+        f"/data/{dataset_path}",
         index_col="id",
         dtype=dtypes,
         converters={
