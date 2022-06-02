@@ -26,6 +26,11 @@ jobs:
           install: true
       - name: Set up Brane Environment 
         run: |
+          # Set the plugin as the default builder
+          docker buildx install
+
+          # Switch to the buildx driver
+          docker buildx create --use
           sudo apt-get update && sudo apt-get install \
               gcc g++ \
               libssl-dev \
