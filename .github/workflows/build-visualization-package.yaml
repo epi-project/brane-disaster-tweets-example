@@ -35,7 +35,7 @@ jobs:
       - name: Set up Brane Cli 
         run: |
           git clone https://github.com/epi-project/brane.git 
-          cd brane && chmod a+x make.sh 
+          cd brane && chmod a+x make.sh && mkdir -p ./target/release/
           ./make.sh cli --precompiled 
           pwd
       - name: Build Brane Visualization
