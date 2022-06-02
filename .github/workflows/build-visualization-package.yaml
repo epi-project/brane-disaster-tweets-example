@@ -21,9 +21,10 @@ jobs:
           architecture: 'x64'
       # You can test your matrix by printing the current Python version
       - name: Get Brane Precompiled File
-        run: git clone https://github.com/epi-project/brane.git &&
-          cd brane && chmod a+x make.sh && 
-          ./make.sh cli --precompiled &&
+        run: |
+          git clone https://github.com/epi-project/brane.git 
+          cd brane && chmod a+x make.sh 
+          ./make.sh cli --precompiled 
           PATH=$PATH:target/release/brane
       - name: Build Brane Visualization
         working-directory: ./packages/visualization
