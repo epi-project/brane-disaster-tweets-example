@@ -1,7 +1,6 @@
 import ast
 import pickle
 import re
-import string
 from typing import List
 
 import nltk
