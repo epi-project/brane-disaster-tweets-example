@@ -28,8 +28,8 @@ jobs:
               libssl-dev \
               pkg-config \
               make \
-              cmake
-          sudo apt-get install musl-tools
+              cmake \
+              musl-tools
           # We place it in /usr/local/bin, but anything in PATH should do
           sudo ln -s /bin/g++ /usr/local/bin/musl-g++
       - name: Set up Brane Cli 
@@ -37,8 +37,7 @@ jobs:
           git clone https://github.com/epi-project/brane.git 
           cd brane && chmod a+x make.sh && mkdir -p ./target/release/
           ./make.sh cli --precompiled 
-          pwd
       - name: Build Brane Visualization
         working-directory: ./packages/visualization
         run: 
-          brane build container.yml
+          /home/runner/work/disaster-tweets-brane/disaster-tweets-brane/brane/target/release/brane build container.yml
