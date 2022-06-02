@@ -58,8 +58,8 @@ let path_model := train_model(path_dataset_nostopwords_train, dfs_vectors_filepa
 // create a submission
 print("Classifying tweets...");
 let path_submission := create_submission(
-    path_dataset_nostopwords_train,
-    dfs_vectors_filepath_train, 
+    path_dataset_nostopwords_test,
+    dfs_vectors_filepath_test, 
     path_model);
 
 // creating bigrams information
