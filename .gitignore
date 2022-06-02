@@ -160,3 +160,6 @@ cython_debug/
 #.idea/
 packages/.DS_Store
 packages/.DS_Store
+
+junit
+.DS_Store
