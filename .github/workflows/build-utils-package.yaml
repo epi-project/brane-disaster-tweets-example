@@ -50,6 +50,5 @@ jobs:
           ./make.sh cli --precompiled 
       - name: Build Brane Utils
         working-directory: ./packages/utils
-        run: |
-          pipenv install
+        run: 
           /home/runner/work/disaster-tweets-brane/disaster-tweets-brane/brane/target/release/brane build container.yml
