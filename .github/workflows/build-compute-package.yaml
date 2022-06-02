@@ -39,7 +39,8 @@ jobs:
               pkg-config \
               make \
               cmake \
-              musl-tools
+              musl-tools \
+              pipenv
           # We place it in /usr/local/bin, but anything in PATH should do
           sudo ln -s /bin/g++ /usr/local/bin/musl-g++
       - name: Set up Brane Cli 
