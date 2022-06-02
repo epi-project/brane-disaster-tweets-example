@@ -1,4 +1,4 @@
-name: Build Visualization Package
+name: Build Utils Package
 
 on: [push]
 
@@ -47,8 +47,8 @@ jobs:
           git clone https://github.com/epi-project/brane.git 
           cd brane && chmod a+x make.sh && mkdir -p ./target/release/
           ./make.sh cli --precompiled 
-      - name: Build Brane Visualization
-        working-directory: ./packages/visualization
+      - name: Build Brane Utils
+        working-directory: ./packages/utils
         run: |
           pipenv install
           /home/runner/work/disaster-tweets-brane/disaster-tweets-brane/brane/target/release/brane build container.yml
