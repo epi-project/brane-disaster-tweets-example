@@ -19,8 +19,9 @@ jobs:
           python-version: '3.9'
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
-      # You can test your matrix by printing the current Python version
-      - name: Get Brane Precompiled File
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Set up Brane Environment 
         run: |
           sudo apt-get update && sudo apt-get install \
               gcc g++ \
@@ -31,16 +32,8 @@ jobs:
           sudo apt-get install musl-tools
           # We place it in /usr/local/bin, but anything in PATH should do
           sudo ln -s /bin/g++ /usr/local/bin/musl-g++
-          # Clone the repo, CD into it and install the plugin (check https://github.com/docker/buildx for alternative methods if that fails)
-          git clone https://github.com/docker/buildx.git && cd buildx
-          make install
-
-          # Set the plugin as the default builder
-          docker buildx install
-
-          # Switch to the buildx driver
-          docker buildx create --use
-          cd ..
+      - name: Set up Brane Cli 
+        run: |
           git clone https://github.com/epi-project/brane.git 
           cd brane && chmod a+x make.sh 
           ./make.sh cli --precompiled 
