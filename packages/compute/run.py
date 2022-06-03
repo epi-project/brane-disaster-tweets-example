@@ -9,10 +9,21 @@ import yaml
 
 from model import create_submission, train_model
 from preprocess import (clean, create_vectors, generate_bigrams,
-                                remove_stopwords, tokenize)
+                        remove_stopwords, tokenize)
 
 
 def run_dataset_action(cmd: str, filepath: str):
+    """
+    Runs generic dataset preprocessing action.
+
+    Parameters
+    ----------
+    cmd: `str`
+    The action name.
+
+    filepath: `str`
+    The dataset filepath in the DFS.
+    """
     return {
         "clean": clean,
         "tokenize": tokenize,
@@ -22,6 +33,15 @@ def run_dataset_action(cmd: str, filepath: str):
 
 
 def print_output(data: dict):
+    """
+    Creates a marked section in the standard output
+    of the container in order for Brane to isolate the result.
+
+    Parameters
+    ----------
+    data: `dict`
+    Any valid Python dictionary that is YAML serializable.
+    """
     print("--> START CAPTURE")
     print(yaml.dump(data))
     print("--> END CAPTURE")

@@ -2,7 +2,10 @@ name: compute
 version: 1.0.0
 kind: ecu # Executable Code Unit
 
-description: ""
+description: |
+  Exposes utilities for preprocessing data, training a classifier, 
+  and generating a valid submission file for the Kaggle challenge
+  'Natural Language Processing with Disaster Tweets'.
 
 contributors:
   - Andrea Marino <am.marinoandrea@gmail.com>
