@@ -1,4 +1,4 @@
-# disaster-tweets-brane
+# Natural Language Processing with Disaster Tweets
 
 ## Introduction
 
@@ -33,4 +33,12 @@ Of course, you can always navigate to the package directory and run the followin
 
 ```
 brane build container.yml
+```
+
+## Run
+
+Our pipeline implementation can be executed locally by simply running the following command in the root folder of the project:
+
+```bash
+brane run -d <DFS_FOLDER> pipeline.rs
 ```
