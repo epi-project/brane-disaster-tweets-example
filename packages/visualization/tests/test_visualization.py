@@ -33,7 +33,7 @@ class TestVisualization(unittest.TestCase):
     @mock.patch("builtins.open", mock_open)
     def test_location_profile(self):
         data = pd.read_csv("/data/dataset_train.csv")
-        result = location_profile(data, isStore=True)
+        result = location_profile(data, store_file=True)
         assert(os.path.exists("location_profile/loc_disaster.png"))
         result = location_profile(data)
         assert(result != "" or result is None)
@@ -46,7 +46,7 @@ class TestVisualization(unittest.TestCase):
 
         result = prediction_plot(predict_data)
         assert(result != "" or result is None)
-        result = prediction_plot(predict_data, isStore=True)
+        result = prediction_plot(predict_data, store_file=True)
         assert(os.path.exists("prediction_plot.png"))
 
     @mock.patch("builtins.open", mock_open)
@@ -55,7 +55,7 @@ class TestVisualization(unittest.TestCase):
                                  converters={"tokens": ast.literal_eval})
         result = keywords_profile(train_data)
         assert(result != "" or result is None)
-        result = keywords_profile(train_data, isStore=True)
+        result = keywords_profile(train_data, store_file=True)
         assert(os.path.exists("keywords_profile/disaster_keywords_plot.png"))
         assert(os.path.exists("keywords_profile/disaster_keywords_word_cloud.png"))
         assert(os.path.exists("keywords_profile/keywords_plot.png"))
@@ -70,7 +70,7 @@ class TestVisualization(unittest.TestCase):
                                  converters={"tokens": ast.literal_eval})
         result = tweets_profile(train_data)
         assert(result != "" or result is None)
-        result = tweets_profile(train_data, isStore=True)
+        result = tweets_profile(train_data, store_file=True)
         assert(os.path.exists("tweets_profile/disaster_tweets_plot.png"))
         assert(os.path.exists("tweets_profile/disaster_tweets_word_cloud.png"))
         assert(os.path.exists("tweets_profile/non_disaster_tweets_plot.png"))
@@ -82,7 +82,8 @@ class TestVisualization(unittest.TestCase):
     def test_plot_bigrams_distribution(self):
         result = plot_bigrams_distribution("dataset_train.csv")
         assert(result != "" or result is None)
-        result = plot_bigrams_distribution("dataset_train.csv", isStore=True)
+        result = plot_bigrams_distribution(
+            "dataset_train.csv", store_file=True)
         assert(os.path.exists("bigrams_distribution.png"))
 
 
