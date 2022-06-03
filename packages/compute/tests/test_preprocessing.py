@@ -72,7 +72,6 @@ class TestPreprocessing(unittest.TestCase):
     @mock.patch("pandas.DataFrame.to_csv", mock_to_csv)
     def test_generate_bigrams(self):
         result = generate_bigrams("dataset_clean_tokenized_nostopwords.csv")
-        print("----1---")
         with open(result, "r") as f:
             bigrams = list(map(
                 lambda x: ast.literal_eval(
