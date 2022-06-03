@@ -43,15 +43,15 @@ def download(owner: str, repo: str, path_src: str, path_dst: str) -> int:
 
     path_src: `str`
     The file path in the repository
-    
+
     path_dst: `str`
     The path where the file will be exported to the file system.
-    
+
     Returns
     -------
     `int` Error code.
     """
-    
+
     res = requests.get(
         f"https://api.github.com/repos/{owner}/{repo}/contents/{path_src}?ref=main")
     if not res.ok:
