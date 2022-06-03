@@ -57,4 +57,11 @@ MOCK_DATASETS = [
         content='''id,keyword,location,text,target
 1,keyword,testlocation,danger storm,1
 2,keyword,testlocation,cute pup,0
+'''),
+    MockDataset(
+        path="/data/dataset_clean_tokenized_nostopwords.csv",
+        content='''id,keyword,location,text,target,text_stemmed,text_lemmatized,tokens
+1,,,our deeds are the reason of this earthquake may allah forgive us all,1,our deeds are the reason of this earthquake may allah forgive us al,our deeds are the reason of this earthquake may allah forgive us al,"[]"
+2,,,forest fire near la ronge sask. canada,1,forest fire near la ronge sask. canada,forest fire near la ronge sask. canada,"['forest']"
+3,,,all residents asked to 'shelter in place' are being notified by officers. no other evacuation or shelter in place orders are expected,1,all residents asked to 'shelter in place' are being notified by officers. no other evacuation or shelter in place orders are expect,all residents asked to 'shelter in place' are being notified by officers. no other evacuation or shelter in place orders are expect,"['residents', 'asked']"
 ''')]

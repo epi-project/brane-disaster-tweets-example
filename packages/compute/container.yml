@@ -22,9 +22,8 @@ files:
   - Pipfile.lock
   - __init__.py
   - run.py
-  - actions/__init__.py
-  - actions/model.py 
-  - actions/preprocess.py 
+  - model.py 
+  - preprocess.py 
 
 entrypoint:
   kind: task

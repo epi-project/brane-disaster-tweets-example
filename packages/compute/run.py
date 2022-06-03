@@ -7,8 +7,8 @@ import sys
 
 import yaml
 
-from actions.model import create_submission, train_model
-from actions.preprocess import (clean, create_vectors, generate_bigrams,
+from model import create_submission, train_model
+from preprocess import (clean, create_vectors, generate_bigrams,
                                 remove_stopwords, tokenize)
 
 
