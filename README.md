@@ -45,7 +45,8 @@ brane build container.yml
 Our pipeline implementation can be executed locally or on a multi-node Kubernetes cluster by simply running the following command in the root folder of the project:
 
 ```bash
-brane run -d <DFS_FOLDER> pipeline.rs
+brane run -d <DFS_FOLDER> pipeline.bs
 ```
-
+The following picture shows a example that our package uses the pipeline.bs to run the whole pipeline in the Kubernetes cluster.
+![Example Runs On Kubernetes cluster](WX20220603-195559.png)
 NOTE: Brane may print some warnings about serialization issues to the console. However, the pipeline can run till the end without issues.
