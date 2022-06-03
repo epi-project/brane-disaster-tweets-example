@@ -1,4 +1,4 @@
-name: Build Utils Package
+name: Compute Package
 
 on: [push]
 
@@ -19,6 +19,28 @@ jobs:
           python-version: '3.9'
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
+      # You can test your matrix by printing the current Python version
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: Install dependencies
+        working-directory: ./packages/compute
+        run: |
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install pipenv -y 
+          pipenv install --system --deploy --dev
+          pip install pyyaml
+      - name: Lint with flake8
+        working-directory: ./packages/compute
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test and Coverage
+        working-directory: ./packages/compute
+        run: |
+          pip install pytest
+          pytest
       - name: Set up Docker Buildx
         run: | 
           # Clone the repo, CD into it and install the plugin (check https://github.com/docker/buildx for alternative methods if that fails)
@@ -48,7 +70,7 @@ jobs:
           git clone https://github.com/epi-project/brane.git 
           cd brane && chmod a+x make.sh && mkdir -p ./target/release/
           ./make.sh cli --precompiled 
-      - name: Build Brane Utils
-        working-directory: ./packages/utils
+      - name: Build Brane Computation
+        working-directory: ./packages/compute
         run: 
           /home/runner/work/disaster-tweets-brane/disaster-tweets-brane/brane/target/release/brane build container.yml

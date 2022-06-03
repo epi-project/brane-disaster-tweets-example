@@ -1,4 +1,4 @@
-name: Build Visualization Package
+name: Visualization Package
 
 on: [push]
 
@@ -19,6 +19,7 @@ jobs:
           python-version: '3.9'
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
+      # You can test your matrix by printing the current Python version
       - name: Set up Docker Buildx
         run: | 
           # Clone the repo, CD into it and install the plugin (check https://github.com/docker/buildx for alternative methods if that fails)

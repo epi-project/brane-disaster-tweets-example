@@ -1,4 +1,4 @@
-name: Build Computation Package
+name: Utils Package
 
 on: [push]
 
@@ -19,6 +19,21 @@ jobs:
           python-version: '3.9'
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
+      # You can test your matrix by printing the current Python version
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: Install dependencies
+        working-directory: ./packages/utils
+        run: |
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install pipenv -y 
+          pipenv install --system --deploy --dev
+          pip install pyyaml
+      - name: Test and Coverage
+        working-directory: ./packages/utils
+        run: |
+          pip install pytest
+          pytest
       - name: Set up Docker Buildx
         run: | 
           # Clone the repo, CD into it and install the plugin (check https://github.com/docker/buildx for alternative methods if that fails)
@@ -48,7 +63,7 @@ jobs:
           git clone https://github.com/epi-project/brane.git 
           cd brane && chmod a+x make.sh && mkdir -p ./target/release/
           ./make.sh cli --precompiled 
-      - name: Build Brane Computation
-        working-directory: ./packages/compute
+      - name: Build Brane Utils
+        working-directory: ./packages/utils
         run: 
           /home/runner/work/disaster-tweets-brane/disaster-tweets-brane/brane/target/release/brane build container.yml
