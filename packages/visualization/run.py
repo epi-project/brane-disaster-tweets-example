@@ -101,9 +101,9 @@ def visualization_action(
     try:
         with open("/data/result.html", "w") as f:
             f.write(result)
-        return 0
+        return "/data/result.html"
     except IOError as e:
-        return e.errno
+        return ""
 
 
 def main():
