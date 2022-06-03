@@ -42,3 +42,5 @@ Our pipeline implementation can be executed locally by simply running the follow
 ```bash
 brane run -d <DFS_FOLDER> pipeline.rs
 ```
+
+NOTE: Brane may print some warnings about serialization issues to the console. However, the pipeline can run till the end without issues.
