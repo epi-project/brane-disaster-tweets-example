@@ -1,12 +1,13 @@
 from collections import namedtuple
 from unittest import mock
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # save the unpatched versions of the mocked functions
 builtin_open = open
 pandas_to_csv = pd.DataFrame.to_csv
+
 
 def mock_open(*args, **kwargs):
     try:
@@ -21,6 +22,7 @@ def mock_open(*args, **kwargs):
 
 def mock_to_csv(df, path: str):
     pandas_to_csv(df, path.replace("/data/", ""))
+
 
 def mock_savefig(path: str):
     plt.savefig(path.replace("/data/", ""))

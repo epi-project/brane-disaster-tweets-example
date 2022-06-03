@@ -2,14 +2,19 @@
 '''
 Entrypoint for the visualization package.
 '''
+import ast
 import codecs
 import os
 import sys
-import ast
+
 import pandas as pd
 import yaml
 
-from visualization import (keywords_profile, location_profile,plot_bigrams_distribution, prediction_plot,tweets_profile,generate_location_profile,generate_prediction_plot,generate_tweets_profile,generate_keywords_profile)
+from visualization import (generate_keywords_profile,
+                           generate_location_profile, generate_prediction_plot,
+                           generate_tweets_profile, keywords_profile,
+                           location_profile, plot_bigrams_distribution,
+                           prediction_plot, tweets_profile)
 
 dtypes = {
     "id": int,
@@ -17,10 +22,22 @@ dtypes = {
     "location": str,
     "text": str,
 }
+
+
 def print_output(data: dict):
+    """
+    Creates a marked section in the standard output
+    of the container in order for Brane to isolate the result.
+
+    Parameters
+    ----------
+    data: `dict`
+    Any valid Python dictionary that is YAML serializable.
+    """
     print("--> START CAPTURE")
     print(yaml.dump(data))
     print("--> END CAPTURE")
+
 
 def visualization_action(
     filepath_test_dataset: str,
@@ -44,17 +61,17 @@ def visualization_action(
     CSV file containing the bigrams information dataset.
     filepath_train_dataset: `str`
     CSV file containing the training dataset.
-    
+
     Returns
     -------
     `int` Error code.
     """
     sub_data = pd.read_csv(filepath_test_dataset,
-        converters={"tokens": ast.literal_eval})
+                           converters={"tokens": ast.literal_eval})
     test_data = pd.read_csv(filepath_sub_dataset,
-        converters={"tokens": ast.literal_eval})
+                            converters={"tokens": ast.literal_eval})
     train_data = pd.read_csv(filepath_train_dataset,
-        converters={"tokens": ast.literal_eval})
+                             converters={"tokens": ast.literal_eval})
     predict_data = pd.merge(sub_data, test_data, on="id")
 
     location_img = location_profile(train_data)
@@ -62,7 +79,7 @@ def visualization_action(
     tweets_imgs = tweets_profile(train_data)
     prdict_img = prediction_plot(predict_data)
     bigrams_img = plot_bigrams_distribution(
-            filepath_bigrams_dataset)
+        filepath_bigrams_dataset)
     template_html = codecs.open("./result.html", "r", "utf-8")
 
     result = template_html.read().format(
@@ -79,7 +96,7 @@ def visualization_action(
         disaster_tweets_text_word_frequency_top30=tweets_imgs[2],
         non_disaster_tweets_text_word_cloud=tweets_imgs[5],
         non_disaster_tweets_text_word_frequency_top30=tweets_imgs[4],
-        disaster_location_top10=location_img,bigrams_img=bigrams_img)
+        disaster_location_top10=location_img, bigrams_img=bigrams_img)
 
     try:
         with open("/data/result.html", "w") as f:
@@ -99,7 +116,8 @@ def main():
         filepath_sub_dataset = "/data/"+os.environ["FILEPATH_SUB_DATASET"]
 
         output = visualization_action(
-            filepath_test_dataset,filepath_train_dataset, filepath_sub_dataset,filepath_bigrams_dataset)
+            filepath_test_dataset, filepath_train_dataset,
+            filepath_sub_dataset, filepath_bigrams_dataset)
         print_output({"output": output})
         return
 
@@ -117,35 +135,35 @@ def main():
         dirs = "/data/location_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
-        output = generate_location_profile(filepath_dataset,n_top)
+        output = generate_location_profile(filepath_dataset, n_top)
         print_output({"output": output})
         return
-    
+
     if command == "generate_tweets_profile":
         filepath_dataset = "/data/"+os.environ["FILEPATH_DATASET"]
         n_top = os.environ["N_TOP"]
         dirs = "/data/tweets_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
-        output = generate_tweets_profile(filepath_dataset,n_top)
+        output = generate_tweets_profile(filepath_dataset, n_top)
         print_output({"output": output})
         return
-    
+
     if command == "generate_keywords_profile":
         filepath_dataset = "/data/"+os.environ["FILEPATH_DATASET"]
         n_top = os.environ["N_TOP"]
         dirs = "/data/keywords_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
-        output = generate_keywords_profile(filepath_dataset,n_top)
+        output = generate_keywords_profile(filepath_dataset, n_top)
         print_output({"output": output})
         return
-    
+
     if command == "plot_bigrams_distribution":
         filepath_dataset = os.environ["FILEPATH_DATASET"]
         n_top_bigrams = os.environ["N_TOP_BIGRAMS"]
         filepath_image = plot_bigrams_distribution(
-            filepath_dataset, int(n_top_bigrams),True)
+            filepath_dataset, int(n_top_bigrams), True)
         print_output({"filepath_image": filepath_image})
         return
 

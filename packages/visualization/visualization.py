@@ -11,19 +11,21 @@ from wordcloud import WordCloud
 sns.set_theme(style="whitegrid")
 
 
-def keywords_word_cloud(data,path="",isStore=False):
+def keywords_word_cloud(data: pd.DataFrame, path: str, store_file=False):
     """
     Generate a picture of Keywords word cloud
 
     Parameters
     ----------
-    data: `dataframe`
-    The pandas dataframe contains the submission and test datasets.
+    data: `pandas.DataFrame`
+    The pandas dataframe containing the submission and test datasets.
+
     path: `str`
-    The path to save the file
-    isStore: `Boolean`
-    This controls if the image need to save to the file system. True means it will save the file.
-    
+    The path where the image will be saved in the DFS.
+
+    store_file: `bool`
+    Whether the images should be saved to the DFS.
+
     Returns
     -------
     `str` The img HTML tag in base64 format.
@@ -35,25 +37,28 @@ def keywords_word_cloud(data,path="",isStore=False):
     plt.imshow(wordcloud)
     plt.axis("off")
     plt.tight_layout(pad=0)
-    if(isStore):
+    if(store_file):
         plt.savefig(path,
-        dpi=300, bbox_inches="tight")
+                    dpi=300, bbox_inches="tight")
     return fig_to_base64(fig)
 
 
-def tweets_wordcloud(data,path,isStore=False):
+def tweets_wordcloud(data: pd.DataFrame, path: str, store_file=False):
     """
-    Generate a word cloud based on the word in the tweets after the stop word removal and text cleaning.
+    Generate a word cloud based on the word in the tweets after
+    the stop word removal and text cleaning.
 
     Parameters
     ----------
-    data: `dataframe`
+    data: `pandas.DataFrame`
     The pandas dataframe contains the submission and test datasets.
+
     path: `str`
-    The path to save the file
-    isStore: `Boolean`
-    This controls if the image need to save to the file system. True means it will save the file.
-    
+    The path where the image will be saved in the DFS.
+
+    store_file: `bool`
+    Whether the images should be saved to the DFS.
+
     Returns
     -------
     `str` The img HTML tag in base64 format.
@@ -61,33 +66,37 @@ def tweets_wordcloud(data,path,isStore=False):
     fig = plt.figure(figsize=(20, 20), facecolor=None)
     wordcloud = WordCloud(background_color='white')\
         .generate_from_frequencies(
-            pd.Series(' '.join(data["tokens"].apply(lambda x: " ".join(x))).split())
+            pd.Series(' '.join(data["tokens"].apply(
+                lambda x: " ".join(x))).split())
         .value_counts(sort=True, dropna=True).to_dict())
     # plot the WordCloud image
     plt.imshow(wordcloud)
     plt.axis("off")
     plt.tight_layout(pad=0)
-    if(isStore):
+    if(store_file):
         plt.savefig(path,
-        dpi=300, bbox_inches="tight")
+                    dpi=300, bbox_inches="tight")
     return fig_to_base64(fig)
 
 
-def draw_plot(data, n,path,isStore=False):
+def draw_plot(data: pd.DataFrame, n, path: str, store_file=False):
     """
     Generate a top n frequency plot based on the data.
 
     Parameters
     ----------
-    data: `dataframe`
+    data: `pandas.DataFrame`
     The pandas dataframe contains the submission and test datasets.
-    n:`int`
-    It controls return top n rank data.
+
+    n: `int`
+    Number of top ranked entries to plot.
+
     path: `str`
-    The path to save the file
-    isStore: `Boolean`
-    This controls if the image need to save to the file system. True means it will save the file.
-    
+    The path where the image will be saved in the DFS.
+
+    store_file: `bool`
+    Whether the images should be saved to the DFS.
+
     Returns
     -------
     `str` The img HTML tag in base64 format.
@@ -96,22 +105,23 @@ def draw_plot(data, n,path,isStore=False):
     data.value_counts(sort=True).nlargest(n).plot.bar()
     plt.tight_layout(pad=0)
     plt.xticks(fontproperties='Times New Roman', size=40)
-    if(isStore):
-        plt.savefig(path,dpi=300, bbox_inches="tight")
+    if(store_file):
+        plt.savefig(path, dpi=300, bbox_inches="tight")
     return fig_to_base64(fig)
 
 
-def prediction_plot(data,isStore=False):
+def prediction_plot(data: pd.DataFrame, store_file=False):
     """
     Generate a pie chart based on the submission result.
 
     Parameters
     ----------
-    data: `dataframe`
+    data: `pandas.DataFrame`
     The pandas dataframe contains the submission and test datasets.
-    isStore: `Boolean`
-    This controls if the image need to save to the file system. True means it will save the file.
-    
+
+    store_file: `bool`
+    Whether the images should be saved to the DFS.
+
     Returns
     -------
     `str` The img HTML tag in base64 format.
@@ -123,25 +133,27 @@ def prediction_plot(data,isStore=False):
                   wedgeprops={'linewidth': 3.0, 'edgecolor': 'white'},
                   textprops={'size': 'x-large'}, startangle=90,
                   explode=(0, 0.1))
-    if(isStore):
+    if(store_file):
         plt.savefig("/data/prediction_plot.png",
-        dpi=300, bbox_inches="tight")
+                    dpi=300, bbox_inches="tight")
     return fig_to_base64(fig)
 
 
-def keywords_profile(data,isStore=False, n_top: int = 10):
+def keywords_profile(data: pd.DataFrame, store_file=False, n_top: int = 10):
     """
     Integrates the tweets keywords word cloud and word counts plot
 
     Parameters
     ----------
-    data: `dataframe`
+    data: `pandas.DataFrame`
     The pandas dataframe contains the submission and test datasets.
-    isStore: `Boolean`
-    This controls if the image need to save to the file system. True means it will save the file.
+
+    store_file: `bool`
+    Whether the images should be saved to the DFS.
+
     n_top:`int`
-    It controls return top n rank data
-    
+    Number of top ranked entries to plot.
+
     Returns
     -------
     `Array[str]`
@@ -152,18 +164,30 @@ def keywords_profile(data,isStore=False, n_top: int = 10):
     """
 
     # the overall data word frequency plot and word cloud
-    image_tweets_plot = draw_plot(data['keyword'], n_top,"/data/keywords_profile/keywords_plot.png",isStore)
-    image_tweets_word_cloud = keywords_word_cloud(data,"/data/keywords_profile/keywords_word_cloud.png",isStore)
+    image_tweets_plot = draw_plot(
+        data['keyword'], n_top,
+        "/data/keywords_profile/keywords_plot.png", store_file)
+    image_tweets_word_cloud = keywords_word_cloud(
+        data, "/data/keywords_profile/keywords_word_cloud.png", store_file)
 
     # the disaster data word frequency plot and word cloud
     disaster_data = data[data['target'] == 1]
-    image_dis_tweets_plot = draw_plot(disaster_data['keyword'], n_top,"/data/keywords_profile/disaster_keywords_plot.png",isStore)
-    image_dis_tweets_word_cloud = keywords_word_cloud(disaster_data,"/data/keywords_profile/disaster_keywords_word_cloud.png",isStore)
+    image_dis_tweets_plot = draw_plot(
+        disaster_data['keyword'], n_top,
+        "/data/keywords_profile/disaster_keywords_plot.png", store_file)
+    image_dis_tweets_word_cloud = keywords_word_cloud(
+        disaster_data,
+        "/data/keywords_profile/disaster_keywords_word_cloud.png", store_file)
 
     # the non-disaster data word frequency plot and word cloud
     non_disaster_data = data[data['target'] == 0]
-    image_no_dis_tweets_plot = draw_plot(non_disaster_data['keyword'], n_top,"/data/keywords_profile/non_disaster_keywords_plot.png",isStore)
-    image_no_dis_tweets_word_cloud = keywords_word_cloud(non_disaster_data,"/data/keywords_profile/non_disaster_keywords_word_cloud.png",isStore)
+    image_no_dis_tweets_plot = draw_plot(
+        non_disaster_data['keyword'], n_top,
+        "/data/keywords_profile/non_disaster_keywords_plot.png", store_file)
+    image_no_dis_tweets_word_cloud = keywords_word_cloud(
+        non_disaster_data,
+        "/data/keywords_profile/non_disaster_keywords_word_cloud.png",
+        store_file)
     return [
         image_tweets_plot,
         image_tweets_word_cloud,
@@ -174,19 +198,21 @@ def keywords_profile(data,isStore=False, n_top: int = 10):
     ]
 
 
-def tweets_profile(data,isStore=False, n_top: int = 10):
+def tweets_profile(data: pd.DataFrame, store_file=False, n_top: int = 10):
     """
     Integrates the tweets word cloud and tweets word counts plot
 
     Parameters
     ----------
-    data: `dataframe`
+    data: `pandas.DataFrame`
     The pandas dataframe contains the submission and test datasets.
-    isStore: `Boolean`
-    This controls if the image need to save to the file system. True means it will save the file.
+
+    store_file: `bool`
+    Whether the images should be saved to the DFS.
+
     n_top:`int`
-    It controls return top n rank data
-    
+    Number of top ranked entries to plot.
+
     Returns
     -------
     `Array[str]`
@@ -197,20 +223,32 @@ def tweets_profile(data,isStore=False, n_top: int = 10):
     """
     # the overall data word frequency plot and word cloud
     image_tweets_plot = draw_plot(
-        pd.Series(' '.join(data["tokens"].apply(lambda x: " ".join(x))).split()), n_top,"/data/tweets_profile/tweets_plot.png",isStore)
-    image_tweets_word_cloud = tweets_wordcloud(data,"/data/tweets_profile/tweets_word_cloud.png",isStore)
+        pd.Series(' '.join(data["tokens"].apply(lambda x: " ".join(x)))
+                  .split()), n_top,
+        "/data/tweets_profile/tweets_plot.png", store_file)
+    image_tweets_word_cloud = tweets_wordcloud(
+        data, "/data/tweets_profile/tweets_word_cloud.png", store_file)
 
     # the disaster data word frequency plot and word cloud
     disaster_data = data[data['target'] == 1]
     image_dis_tweets_plot = draw_plot(
-        pd.Series(' '.join(disaster_data["tokens"].apply(lambda x: " ".join(x))).split()), n_top,"/data/tweets_profile/disaster_tweets_plot.png",isStore)
-    image_dis_tweets_word_cloud = tweets_wordcloud(disaster_data,"/data/tweets_profile/disaster_tweets_word_cloud.png",isStore)
+        pd.Series(' '.join(disaster_data["tokens"]
+                           .apply(lambda x: " ".join(x)))
+                  .split()), n_top,
+        "/data/tweets_profile/disaster_tweets_plot.png", store_file)
+    image_dis_tweets_word_cloud = tweets_wordcloud(
+        disaster_data, "/data/tweets_profile/disaster_tweets_word_cloud.png",
+        store_file)
 
     # the non-disaster data word frequency plot and word cloud
     non_disaster_data = data[data['target'] == 0]
     image_no_dis_tweets_plot = draw_plot(
-        pd.Series(' '.join(non_disaster_data["tokens"].apply(lambda x: " ".join(x))).split()), n_top,"/data/tweets_profile/non_disaster_tweets_plot.png",isStore)
-    image_no_dis_tweets_word_cloud = tweets_wordcloud(non_disaster_data,"/data/tweets_profile/non_disaster_tweets_word_cloud.png",isStore)
+        pd.Series(' '.join(non_disaster_data["tokens"]
+                           .apply(lambda x: " ".join(x))).split()),
+        n_top, "/data/tweets_profile/non_disaster_tweets_plot.png", store_file)
+    image_no_dis_tweets_word_cloud = tweets_wordcloud(
+        non_disaster_data,
+        "/data/tweets_profile/non_disaster_tweets_word_cloud.png", store_file)
     return [
         image_tweets_plot,
         image_tweets_word_cloud,
@@ -221,33 +259,75 @@ def tweets_profile(data,isStore=False, n_top: int = 10):
     ]
 
 
-def location_profile(data,isStore=False,n_top=10):
+def location_profile(data: pd.DataFrame, store_file=False, n_top=10):
     """
     Generate a plot that the top N counts of the dataset
 
     Parameters
     ----------
-    data: `dataframe`
+    data: `pandas.DataFrame`
     The pandas dataframe contains the submission and test datasets.
-    isStore: `Boolean`
-    This controls if the image need to save to the file system. True means it will save the file.
+
+    store_file: `bool`
+    Whether the images should be saved to the DFS.
+
     n_top:`int`
-    It controls return top n rank data
-    
+    Number of top ranked entries to plot.
+
     Returns
     -------
     `str` The img HTML tag in base64 format.
     """
-    location_map = {"Worldwide": "Earth", "Everywhere": "Earth", "United Kingdom": "UK", "Manchester": "UK", "London, England": "UK", "Memphis, TN": "USA", "Dallas, TX": "USA", "Oklahoma City, OK": "USA", "San Diego, CA": "USA", "Pennsylvania, USA": "USA", "Texas": "USA", "Seattle": "USA", "Chicago": "USA", "Florida": "USA", "NYC": "USA", "San Francisco": "USA", "Atlanta, GA": "USA", "San Francisco, CA": "USA", "New York City": "USA",
-                    "US": "USA", "Denver, Colorado": "USA", "Chicago, IL": "USA", "Nashville, TN": "USA", "Los Angeles": "USA", "Sacramento, CA": "USA", "Toronto": "Canada", "Los Angeles ": "USA", "New York": "USA", "California": "USA", "New York, NY": "USA", "United States": "USA", "Mumbai": "India", "Manhattan, NY": "USA", "Los Angeles, CA": "USA", "NYC area": "USA", "Washington, DC": "USA", "Washington, D.C.": "USA", "London": "UK", "California, USA": "USA"}
+    location_map = {
+        "Worldwide": "Earth",
+        "Everywhere": "Earth",
+        "United Kingdom": "UK",
+        "Manchester": "UK",
+        "London, England": "UK",
+        "Memphis, TN": "USA",
+        "Dallas, TX": "USA",
+        "Oklahoma City, OK": "USA",
+        "San Diego, CA": "USA",
+        "Pennsylvania, USA": "USA",
+        "Texas": "USA",
+        "Seattle": "USA",
+        "Chicago": "USA",
+        "Florida": "USA",
+        "NYC": "USA",
+        "San Francisco": "USA",
+        "Atlanta, GA": "USA",
+        "San Francisco, CA": "USA",
+        "New York City": "USA",
+        "US": "USA",
+        "Denver, Colorado": "USA",
+        "Chicago, IL": "USA",
+        "Nashville, TN": "USA",
+        "Los Angeles": "USA",
+        "Sacramento, CA": "USA",
+        "Toronto": "Canada",
+        "Los Angeles ": "USA",
+        "New York": "USA",
+        "California": "USA",
+        "New York, NY": "USA",
+        "United States": "USA",
+        "Mumbai": "India",
+        "Manhattan, NY": "USA",
+        "Los Angeles, CA": "USA",
+        "NYC area": "USA",
+        "Washington, DC": "USA",
+        "Washington, D.C.": "USA",
+        "London": "UK",
+        "California, USA": "USA"}
     data.drop(data[(data["location"] == "304") | (
         data["location"] == 'ss')].index, inplace=True)
     disaster_data = data[data['target'] == 1]
 
-    loc_disaster = disaster_data["location"].str.replace('\$\$', '\\$\\$').apply(
+    loc_disaster = disaster_data["location"].str.replace('\$\$', '\\$\\$')\
+        .apply(
         lambda x: x if (x not in location_map) else location_map.get(x))
 
-    return draw_plot(loc_disaster, n_top,"/data/location_profile/loc_disaster.png",isStore)
+    return draw_plot(loc_disaster, n_top,
+                     "/data/location_profile/loc_disaster.png", store_file)
 
 
 def fig_to_base64(fig):
@@ -273,7 +353,7 @@ def fig_to_base64(fig):
 
 
 def plot_bigrams_distribution(
-    dataset_path: str, n_top_bigrams: int = 15,isStore=False
+    dataset_path: str, n_top_bigrams: int = 15, store_file=False
 ) -> str:
     """
     Plots the bigrams occurence distribution given a dataset
@@ -313,21 +393,21 @@ def plot_bigrams_distribution(
     most = counter.most_common()
 
     x, y = [], []
-    for word, count in most[:15]:
+    for word, count in most[:n_top_bigrams]:
         x.append(word)
         y.append(count)
     fig = plt.figure(figsize=(25, 12))
-    
+
     p = sns.barplot(x=y, y=x, color="blue", palette="pastel")
-    p.set_xlabel("X-Axis", fontsize = 40)
-    p.set_ylabel("Y-Axis", fontsize = 40)
+    p.set_xlabel("X-Axis", fontsize=40)
+    p.set_ylabel("Y-Axis", fontsize=40)
     plt.xticks(fontsize=30)
     plt.yticks(fontsize=30)
-    
+
     plt.ylabel("Bi-grams")
     plt.xlabel("Occurrences")
 
-    if(not isStore):
+    if(not store_file):
         return fig_to_base64(fig)
     else:
         plt.savefig(
@@ -336,8 +416,9 @@ def plot_bigrams_distribution(
         plt.close()
         return "bigrams_distribution.png"
 
+
 def generate_prediction_plot(
-            filepath_test_dataset: str, filepath_sub_dataset: str) -> str:
+        filepath_test_dataset: str, filepath_sub_dataset: str) -> str:
     """
     Generate a plot that the top N counts of the dataset
     and exports an image in the DFS.
@@ -356,16 +437,17 @@ def generate_prediction_plot(
     -------
     `str` The name for the plot image in the DFS.
     """
-    
+
     sub_data = pd.read_csv(filepath_test_dataset)
     test_data = pd.read_csv(filepath_sub_dataset)
     predict_data = pd.merge(sub_data, test_data, on="id")
 
-    prediction_plot(predict_data,True)
-    
+    prediction_plot(predict_data, True)
+
     return "prediction_plot.png"
 
-def generate_location_profile(dataset_path: str, n_top: int = 10) -> str: 
+
+def generate_location_profile(dataset_path: str, n_top: int = 10) -> str:
     """
     Generate a plot that the top N Disaster Location of the dataset
     and exports an image in the DFS.
@@ -384,14 +466,15 @@ def generate_location_profile(dataset_path: str, n_top: int = 10) -> str:
     -------
     `str` The path for the plot image in the DFS.
     """
-    
+
     data = pd.read_csv(dataset_path,
-        converters={"tokens": ast.literal_eval})
-    location_profile(data,True,n_top)
-    
+                       converters={"tokens": ast.literal_eval})
+    location_profile(data, True, n_top)
+
     return "/data/location_profile"
 
-def generate_tweets_profile(dataset_path: str, n_top: int = 10) -> str: 
+
+def generate_tweets_profile(dataset_path: str, n_top: int = 10) -> str:
     """
     Integrates the tweets word cloud and tweets word counts plot
     and exports images in the DFS.
@@ -410,12 +493,13 @@ def generate_tweets_profile(dataset_path: str, n_top: int = 10) -> str:
     -------
     `str` The path for the plot image in the DFS.
     """
-    
+
     data = pd.read_csv(dataset_path,
-        converters={"tokens": ast.literal_eval})
-    tweets_profile(data,True,n_top)
-    
+                       converters={"tokens": ast.literal_eval})
+    tweets_profile(data, True, n_top)
+
     return "/data/tweets_profile"
+
 
 def generate_keywords_profile(dataset_path: str, n_top: int = 10) -> str:
     """
@@ -436,9 +520,9 @@ def generate_keywords_profile(dataset_path: str, n_top: int = 10) -> str:
     -------
     `str` The path for the plot image in the DFS.
     """
-    
+
     data = pd.read_csv(dataset_path,
-        converters={"tokens": ast.literal_eval})
-    keywords_profile(data,True,n_top)
-    
+                       converters={"tokens": ast.literal_eval})
+    keywords_profile(data, True, n_top)
+
     return "/data/keywords_profile"
