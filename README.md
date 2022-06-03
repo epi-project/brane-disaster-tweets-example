@@ -4,7 +4,7 @@
 This project contains three sub-projects: `compute`, `visualization`, and `utils`.
 The `compute` is a data process brane package for [the disaster tweets Kaggle competition](https://www.kaggle.com/competitions/nlp-getting-started/overview/description) that contains preprocess data, training model, and prediction. The `visualization` is a brane package to generate all the plots based on the dataset. The `utils` is a utility brane package that provides general features like download files.
 
-***Note:*** This project uses the ***Git Submodules*** to do vision control. 
+***Note:*** This project is based on the [brane](https://github.com/epi-project/brane) and uses the ***Git Submodules*** to do vision control.
 
 ## Build Package
 
@@ -19,3 +19,5 @@ You can run ``` ./build.sh all ```  to build all of our packages. Aside from tha
 #build the utils package
 ./build.sh utils
 ```
+
+After build package, you can deploy our package through the brane. 
