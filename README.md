@@ -28,3 +28,9 @@ However, we also provide a shell script for convenience. The user can clone the 
 # build the utils package
 ./build.sh utils
 ```
+
+Of course, you can always navigate to the package directory and run the following command to build the brane package.
+
+```
+brane build container.yml
+```
