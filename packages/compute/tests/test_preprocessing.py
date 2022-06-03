@@ -1,8 +1,9 @@
 import ast
+import os
 import unittest
 from unittest import mock
-import os
-from ..preprocess import clean, remove_stopwords, tokenize,generate_bigrams
+
+from ..preprocess import clean, generate_bigrams, remove_stopwords, tokenize
 from .mock_data import mock_open, mock_to_csv
 
 
@@ -66,8 +67,7 @@ class TestPreprocessing(unittest.TestCase):
             assert(len(tokens[0]) == 0)
             assert(len(tokens[1]) == 0)
             assert(tokens[2][0] == "disast")
-    
-    
+
     @mock.patch("builtins.open", mock_open)
     @mock.patch("pandas.DataFrame.to_csv", mock_to_csv)
     def test_generate_bigrams(self):
@@ -80,7 +80,7 @@ class TestPreprocessing(unittest.TestCase):
             assert(len(bigrams[0]) == 0)
             assert(len(bigrams[1]) == 0)
             assert(bigrams[2][0] == "residents_asked")
-    
+
     @classmethod
     def tearDownClass(self):
         os.remove("dataset_raw_http_clean.csv")
