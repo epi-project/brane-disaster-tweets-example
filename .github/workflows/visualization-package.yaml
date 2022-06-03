@@ -20,6 +20,20 @@ jobs:
           # Optional - x64 or x86 architecture, defaults to x64
           architecture: 'x64'
       # You can test your matrix by printing the current Python version
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: Install dependencies
+        working-directory: ./packages/visualization
+        run: |
+          sudo apt update && sudo apt upgrade -y
+          sudo apt install pipenv -y 
+          pipenv install --system --deploy --dev
+          pip install pyyaml
+      - name: Test and Coverage
+        working-directory: ./packages/visualization
+        run: |
+          pip install pytest
+          pytest
       - name: Set up Docker Buildx
         run: | 
           # Clone the repo, CD into it and install the plugin (check https://github.com/docker/buildx for alternative methods if that fails)

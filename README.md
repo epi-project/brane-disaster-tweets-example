@@ -20,4 +20,9 @@ You can run ``` ./build.sh all ```  to build all of our packages. Aside from tha
 ./build.sh utils
 ```
 
+Of course, you can always go to the package directory and run the following command to build the brane package.
+```  
+brane build container.yml  
+```  
+
 After build package, you can deploy our package through the brane. 
