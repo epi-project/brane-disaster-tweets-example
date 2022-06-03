@@ -1,5 +1,10 @@
 # Natural Language Processing with Disaster Tweets
 
+[![DOI](https://zenodo.org/badge/491528415.svg)](https://zenodo.org/badge/latestdoi/491528415)
+![Compute Package](https://github.com/marinoandrea/disaster-tweets-brane/actions/workflows/compute-package.yaml/badge.svg)
+![Utils Package](https://github.com/marinoandrea/disaster-tweets-brane/actions/workflows/utils-package.yaml/badge.svg)
+![Visualization Package](https://github.com/marinoandrea/disaster-tweets-brane/actions/workflows/visualization-package.yaml/badge.svg)
+
 ## Introduction
 
 This project features an implementation of an NLP pipeline for [the disaster tweets Kaggle competition](https://www.kaggle.com/competitions/nlp-getting-started/overview/description) using the [Brane](https://github.com/epi-project/brane) framework. The implementation is divided into the following Brane packages which can be imported individually and used in other workflows: `compute`, `visualization`, and `utils`.
