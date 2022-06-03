@@ -48,5 +48,6 @@ Our pipeline implementation can be executed locally or on a multi-node Kubernete
 brane run -d <DFS_FOLDER> pipeline.bs
 ```
 The following picture shows an example that our package uses the pipeline.bs to run the whole pipeline in the Kubernetes cluster.
-![Example Runs On Kubernetes cluster](WX20220603-195559.png)
+![Example Runs On Kubernetes cluster](WX20220603-195559.png)  
+
 NOTE: Brane may print some warnings about serialization issues to the console. However, the pipeline can run till the end without issues.
