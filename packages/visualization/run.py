@@ -135,7 +135,7 @@ def main():
         dirs = "/data/location_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
-        output = generate_location_profile(filepath_dataset, n_top)
+        output = generate_location_profile(filepath_dataset, int(n_top))
         print_output({"output": output})
         return
 
@@ -145,7 +145,7 @@ def main():
         dirs = "/data/tweets_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
-        output = generate_tweets_profile(filepath_dataset, n_top)
+        output = generate_tweets_profile(filepath_dataset, int(n_top))
         print_output({"output": output})
         return
 
@@ -155,7 +155,7 @@ def main():
         dirs = "/data/keywords_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
-        output = generate_keywords_profile(filepath_dataset, n_top)
+        output = generate_keywords_profile(filepath_dataset, int(n_top))
         print_output({"output": output})
         return
 
