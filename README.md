@@ -1,23 +1,30 @@
 # disaster-tweets-brane
 
 ## Introduction
-This project contains three sub-projects: `compute`, `visualization`, and `utils`.
-The `compute` is a data process brane package for [the disaster tweets Kaggle competition](https://www.kaggle.com/competitions/nlp-getting-started/overview/description) that contains preprocess data, training model, and prediction. The `visualization` is a brane package to generate all the plots based on the dataset. The `utils` is a utility brane package that provides general features like download files.
 
-***Note:*** This project is based on the [brane](https://github.com/epi-project/brane) and uses the ***Git Submodules*** to do vision control.
+This project features an implementation of an NLP pipeline for [the disaster tweets Kaggle competition](https://www.kaggle.com/competitions/nlp-getting-started/overview/description) using the [Brane](https://github.com/epi-project/brane) framework. The implementation is divided into the following Brane packages which can be imported individually and used in other workflows: `compute`, `visualization`, and `utils`.
 
-## Build Package
+- `compute` exposes utilities for preprocessing data, training a classifier, and generating a valid submission file for the challenge.
+- `visualization` provides functions to generate plots and charts based on the dataset.
+- `utils` contains generic utility functions and specifically allows for downloading the dataset at runtime.
 
-We provide a shell script called build.sh to help users build our packages. 
-You can run ``` ./build.sh all ```  to build all of our packages. Aside from that, you also can run the following commands to build one of our packages.
+We also include a `github.yml` specification which defines an OpenAPI container that exposes a function to download arbitrary files from GitHub repositories.
+
+## Build
+
+Each package can be individually imported with the following command:
 
 ```bash
-#build the computation package
-./build.sh compute
-#build the visualization package
-./build.sh visualization
-#build the utils package
-./build.sh utils
+brane import marinoandrea/disaster-tweets-brane -c packages/<PACKAGE_NAME>
 ```
 
-After build package, you can deploy our package through the brane. 
+However, we also provide a shell script for convenience. The user can clone the repository and simply run `./build.sh all` to build all of our packages. Additionally, you also can run the following commands to build a specific package.
+
+```bash
+# build the computation package
+./build.sh compute
+# build the visualization package
+./build.sh visualization
+# build the utils package
+./build.sh utils
+```
