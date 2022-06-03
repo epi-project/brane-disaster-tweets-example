@@ -19,7 +19,11 @@ def keywords_word_cloud(data,path="",isStore=False):
     ----------
     data: `dataframe`
     The pandas dataframe contains the submission and test datasets.
-
+    path: `str`
+    The path to save the file
+    isStore: `Boolean`
+    This controls if the image need to save to the file system. True means it will save the file.
+    
     Returns
     -------
     `str` The img HTML tag in base64 format.
@@ -45,7 +49,11 @@ def tweets_wordcloud(data,path,isStore=False):
     ----------
     data: `dataframe`
     The pandas dataframe contains the submission and test datasets.
-
+    path: `str`
+    The path to save the file
+    isStore: `Boolean`
+    This controls if the image need to save to the file system. True means it will save the file.
+    
     Returns
     -------
     `str` The img HTML tag in base64 format.
@@ -75,7 +83,11 @@ def draw_plot(data, n,path,isStore=False):
     The pandas dataframe contains the submission and test datasets.
     n:`int`
     It controls return top n rank data.
-
+    path: `str`
+    The path to save the file
+    isStore: `Boolean`
+    This controls if the image need to save to the file system. True means it will save the file.
+    
     Returns
     -------
     `str` The img HTML tag in base64 format.
@@ -97,7 +109,9 @@ def prediction_plot(data,isStore=False):
     ----------
     data: `dataframe`
     The pandas dataframe contains the submission and test datasets.
-
+    isStore: `Boolean`
+    This controls if the image need to save to the file system. True means it will save the file.
+    
     Returns
     -------
     `str` The img HTML tag in base64 format.
@@ -123,7 +137,11 @@ def keywords_profile(data,isStore=False, n_top: int = 10):
     ----------
     data: `dataframe`
     The pandas dataframe contains the submission and test datasets.
-
+    isStore: `Boolean`
+    This controls if the image need to save to the file system. True means it will save the file.
+    n_top:`int`
+    It controls return top n rank data
+    
     Returns
     -------
     `Array[str]`
@@ -164,7 +182,11 @@ def tweets_profile(data,isStore=False, n_top: int = 10):
     ----------
     data: `dataframe`
     The pandas dataframe contains the submission and test datasets.
-
+    isStore: `Boolean`
+    This controls if the image need to save to the file system. True means it will save the file.
+    n_top:`int`
+    It controls return top n rank data
+    
     Returns
     -------
     `Array[str]`
@@ -201,13 +223,17 @@ def tweets_profile(data,isStore=False, n_top: int = 10):
 
 def location_profile(data,isStore=False,n_top=10):
     """
-    Generate a plot that the top 10 counts of the dataset
+    Generate a plot that the top N counts of the dataset
 
     Parameters
     ----------
     data: `dataframe`
     The pandas dataframe contains the submission and test datasets.
-
+    isStore: `Boolean`
+    This controls if the image need to save to the file system. True means it will save the file.
+    n_top:`int`
+    It controls return top n rank data
+    
     Returns
     -------
     `str` The img HTML tag in base64 format.
@@ -312,6 +338,25 @@ def plot_bigrams_distribution(
 
 def generate_prediction_plot(
             filepath_test_dataset: str, filepath_sub_dataset: str) -> str:
+    """
+    Generate a plot that the top N counts of the dataset
+    and exports an image in the DFS.
+
+    Parameters
+    ----------
+    filepath_test_dataset: `str`
+    The dataset CSV/TSV path in the distributed file system.
+    It expects a test dataset.
+
+    filepath_sub_dataset: `str`
+    The dataset CSV/TSV path in the distributed file system.
+    It expects a prediction dataset.
+
+    Returns
+    -------
+    `str` The name for the plot image in the DFS.
+    """
+    
     sub_data = pd.read_csv(filepath_test_dataset)
     test_data = pd.read_csv(filepath_sub_dataset)
     predict_data = pd.merge(sub_data, test_data, on="id")
@@ -321,6 +366,25 @@ def generate_prediction_plot(
     return "prediction_plot.png"
 
 def generate_location_profile(dataset_path: str, n_top: int = 10) -> str: 
+    """
+    Generate a plot that the top N Disaster Location of the dataset
+    and exports an image in the DFS.
+
+    Parameters
+    ----------
+    dataset_path: `str`
+    The dataset CSV/TSV path in the distributed file system.
+    It expects a dataset with a 'tokens' column.
+
+    n_top: `int`
+    Number of location to include in the visualization in descending
+    order of counts.
+
+    Returns
+    -------
+    `str` The path for the plot image in the DFS.
+    """
+    
     data = pd.read_csv(dataset_path,
         converters={"tokens": ast.literal_eval})
     location_profile(data,True,n_top)
@@ -328,6 +392,25 @@ def generate_location_profile(dataset_path: str, n_top: int = 10) -> str:
     return "/data/location_profile"
 
 def generate_tweets_profile(dataset_path: str, n_top: int = 10) -> str: 
+    """
+    Integrates the tweets word cloud and tweets word counts plot
+    and exports images in the DFS.
+
+    Parameters
+    ----------
+    dataset_path: `str`
+    The dataset CSV/TSV path in the distributed file system.
+    It expects a dataset with a 'tokens' column.
+
+    n_top: `int`
+    Number of words to include in the visualization in descending
+    order of counts.
+
+    Returns
+    -------
+    `str` The path for the plot image in the DFS.
+    """
+    
     data = pd.read_csv(dataset_path,
         converters={"tokens": ast.literal_eval})
     tweets_profile(data,True,n_top)
@@ -335,6 +418,25 @@ def generate_tweets_profile(dataset_path: str, n_top: int = 10) -> str:
     return "/data/tweets_profile"
 
 def generate_keywords_profile(dataset_path: str, n_top: int = 10) -> str:
+    """
+    Integrates the tweets keywords word cloud and word counts plot
+    and exports images in the DFS.
+
+    Parameters
+    ----------
+    dataset_path: `str`
+    The dataset CSV/TSV path in the distributed file system.
+    It expects a dataset with a 'tokens' column.
+
+    n_top: `int`
+    Number of keywords to include in the visualization in descending
+    order of counts.
+
+    Returns
+    -------
+    `str` The path for the plot image in the DFS.
+    """
+    
     data = pd.read_csv(dataset_path,
         converters={"tokens": ast.literal_eval})
     keywords_profile(data,True,n_top)

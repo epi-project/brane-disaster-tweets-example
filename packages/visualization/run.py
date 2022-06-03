@@ -40,6 +40,11 @@ def visualization_action(
     filepath_sub_dataset: `str`
     CSV file containing the submission dataset.
 
+    filepath_bigrams_dataset: `str`
+    CSV file containing the bigrams information dataset.
+    filepath_train_dataset: `str`
+    CSV file containing the training dataset.
+    
     Returns
     -------
     `int` Error code.
@@ -93,13 +98,6 @@ def main():
         filepath_bigrams_dataset = os.environ["FILEPATH_BIGRAMS_DATASET"]
         filepath_sub_dataset = "/data/"+os.environ["FILEPATH_SUB_DATASET"]
 
-        # filepath_test_dataset = "test_clean_tokenized_nostopwords.csv"
-        # filepath_train_dataset = "train_clean_tokenized_nostopwords.csv"
-        # filepath_dataset = "train_clean_tokenized_nostopwords.csv"
-        # filepath_sub_dataset = "submission.csv"
-        # filepath_bigrams_dataset = "train_clean_bigrams.csv"
-        # n_top_bigrams = 15
-        # n_top=10
         output = visualization_action(
             filepath_test_dataset,filepath_train_dataset, filepath_sub_dataset,filepath_bigrams_dataset)
         print_output({"output": output})
@@ -117,7 +115,6 @@ def main():
         filepath_dataset = "/data/"+os.environ["FILEPATH_DATASET"]
         n_top = os.environ["N_TOP"]
         dirs = "/data/location_profile"
-        # dirs = "/Users/user/Documents/wscbs/disaster-tweets-brane/packages/visualization/data/location_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
         output = generate_location_profile(filepath_dataset,n_top)
@@ -128,7 +125,6 @@ def main():
         filepath_dataset = "/data/"+os.environ["FILEPATH_DATASET"]
         n_top = os.environ["N_TOP"]
         dirs = "/data/tweets_profile"
-        # dirs = "/Users/user/Documents/wscbs/disaster-tweets-brane/packages/visualization/data/tweets_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
         output = generate_tweets_profile(filepath_dataset,n_top)
@@ -139,7 +135,6 @@ def main():
         filepath_dataset = "/data/"+os.environ["FILEPATH_DATASET"]
         n_top = os.environ["N_TOP"]
         dirs = "/data/keywords_profile"
-        # dirs = "/Users/user/Documents/wscbs/disaster-tweets-brane/packages/visualization/data/keywords_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
         output = generate_keywords_profile(filepath_dataset,n_top)
