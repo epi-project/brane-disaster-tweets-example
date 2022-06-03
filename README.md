@@ -42,7 +42,7 @@ brane build container.yml
 
 ## Run
 
-Our pipeline implementation can be executed locally by simply running the following command in the root folder of the project:
+Our pipeline implementation can be executed locally or on a multi-node Kubernetes cluster by simply running the following command in the root folder of the project:
 
 ```bash
 brane run -d <DFS_FOLDER> pipeline.rs
