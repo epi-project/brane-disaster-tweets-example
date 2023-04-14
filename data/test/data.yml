@@ -1,0 +1,17 @@
+# DATA.yml for the test set
+#   by Tim Müller
+# 
+# This file describes how a dataset acts within the system. For now, only raw
+# files are supported, making this file very simple.
+#
+
+# Set some metadata for this dataset
+name: nlp_test
+owners:
+- Tim Müller
+description: Training set for NLP distaster tweets.
+
+# This is the real magic: we tell Brane we mean this file
+access:
+  kind: file
+  path: ./data

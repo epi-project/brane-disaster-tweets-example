@@ -1,0 +1,28 @@
+
+
+//////// TRAINING ////////
+import compute;
+
+println("Cleaning dataset...");
+let train := clean(new Data{ name := "nlp_train" });
+let test  := clean(new Data{ name := "nlp_test" });
+
+println("Tokenizing dataset...");
+train := tokenize(train);
+test  := tokenize(test);
+
+println("Removing stopwords from dataset...");
+train := remove_stopwords(train);
+test  := remove_stopwords(test);
+
+println("Performing feature vectorization...");
+let vectors := create_vectors(train, test);
+
+println("Training model...");
+let model := train_model(train, vectors);
+commit_result("nlp_model", model);
+
+
+
+//////// TESTING ////////
+

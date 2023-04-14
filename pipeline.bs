@@ -1,6 +1,6 @@
-import compute;
-import visualization;
-import utils;
+import nlp_compute;
+import nlp_visualization;
+import nlp_utils;
 
 let repo_owner := "marinoandrea";
 let repo_name := "disaster-tweets-brane";

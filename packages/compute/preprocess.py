@@ -8,14 +8,10 @@ import pandas as pd
 import sklearn
 
 # download preprocessing assets (corpus and word lists)
+# NOTE: Due to the new no-internet constraints during runtime, these are actually downloaded beforehand in the `container.yml`
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
-
-
-def _make_new_filepath(original: str, suffix: str) -> str:
-    name, ext = original.split(".")
-    return f"{name}_{suffix}.{ext}"
 
 
 def clean(dataset_path: str) -> str:
@@ -51,13 +47,14 @@ def clean(dataset_path: str) -> str:
         "text": str
     }
 
+    dataset_path = f"{dataset_path}/dataset.csv"
     if "train" in dataset_path:
         dtypes["target"] = int
 
-    new_path = _make_new_filepath(dataset_path, "clean")
-    df = pd.read_csv(f"/data/{dataset_path}", index_col="id", dtype=dtypes)
+    new_path = "/result/dataset.csv"
+    df = pd.read_csv(dataset_path, index_col="id", dtype=dtypes)
     df["text"] = df["text"].apply(_remove_unused)
-    df.to_csv(f"/data/{new_path}")
+    df.to_csv(new_path)
     return new_path
 
 
@@ -83,17 +80,18 @@ def tokenize(dataset_path: str) -> str:
         "text": str
     }
 
+    dataset_path = f"{dataset_path}/dataset.csv"
     if "train" in dataset_path:
         dtypes["target"] = int
 
-    new_path = _make_new_filepath(dataset_path, "tokenized")
-    df = pd.read_csv(f"/data/{dataset_path}", index_col="id", dtype=dtypes)
+    new_path = "/result/dataset.csv"
+    df = pd.read_csv(dataset_path, index_col="id", dtype=dtypes)
     df["text_stemmed"] = df["text"].apply(nltk.stem.PorterStemmer().stem)
     df["text_lemmatized"] = df["text_stemmed"].apply(
         nltk.stem.WordNetLemmatizer().lemmatize)
     df["tokens"] = df["text_lemmatized"].apply(
         nltk.tokenize.RegexpTokenizer(r'\w+').tokenize)
-    df.to_csv(f"/data/{new_path}")
+    df.to_csv(new_path)
     return new_path
 
 
@@ -122,6 +120,7 @@ def remove_stopwords(dataset_path: str) -> str:
         "text_lemmatized": str,
     }
 
+    dataset_path = f"{dataset_path}/dataset.csv"
     if "train" in dataset_path:
         dtypes["target"] = int
 
@@ -129,14 +128,14 @@ def remove_stopwords(dataset_path: str) -> str:
         return [w for w in tokens
                 if w not in nltk.corpus.stopwords.words('english')]
 
-    new_path = _make_new_filepath(dataset_path, "nostopwords")
+    new_path = "/result/dataset.csv"
     df = pd.read_csv(
-        f"/data/{dataset_path}",
+        dataset_path,
         index_col="id",
         dtype=dtypes,
         converters={"tokens": ast.literal_eval})
     df["tokens"] = df["tokens"].apply(_rm_stopwords)
-    df.to_csv(f"/data/{new_path}")
+    df.to_csv(new_path)
     return new_path
 
 
@@ -180,7 +179,7 @@ def create_vectors(
     }
 
     df_train = pd.read_csv(
-        f"/data/{dataset_path_train}",
+        dataset_path_train,
         index_col="id",
         dtype={**dtypes, "target": int},
         converters={"tokens": ast.literal_eval})
@@ -188,7 +187,7 @@ def create_vectors(
         lambda x: " ".join(x))
 
     df_test = pd.read_csv(
-        f"/data/{dataset_path_test}",
+        dataset_path_test,
         index_col="id",
         dtype=dtypes,
         converters={"tokens": ast.literal_eval})
@@ -199,9 +198,9 @@ def create_vectors(
     vectors_train = vectorizer.fit_transform(df_train["text_preprocessed"])
     vectors_test = vectorizer.transform(df_test["text_preprocessed"])
 
-    with open(f"/data/{vectors_path_train}", "wb") as f:
+    with open(vectors_path_train, "wb") as f:
         pickle.dump(vectors_train, f)
-    with open(f"/data/{vectors_path_test}", "wb") as f:
+    with open(vectors_path_test, "wb") as f:
         pickle.dump(vectors_test, f)
 
     return 0

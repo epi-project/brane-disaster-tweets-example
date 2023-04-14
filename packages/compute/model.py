@@ -34,23 +34,22 @@ def train_model(dataset_path: str, vectors_path: str) -> str:
     }
 
     dataset = pd.read_csv(
-        f"/data/{dataset_path}",
+        dataset_path,
         index_col="id",
         dtype=dtypes,
         converters={"tokens": ast.literal_eval})
 
-    with open(f"/data/{vectors_path}", "rb") as f:
+    with open(vectors_path, "rb") as f:
         vectors = pickle.load(f)
 
     model = BernoulliNB()
     model.fit(vectors, dataset["target"])
 
     timestamp = datetime.datetime.utcnow()
-    filename = f"model_{timestamp}.pickle"
-    with open(f"/data/{filename}", "wb") as f:
+    with open("/result/model.pickle", "wb") as f:
         pickle.dump(model, f)
 
-    return filename
+    return "/result/model.pickle"
 
 
 def create_submission(
