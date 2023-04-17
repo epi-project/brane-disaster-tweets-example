@@ -15,7 +15,6 @@ dependencies:
 install:
   - apt update && apt upgrade -y 
   - apt install -y pipenv
-  - pipenv install --system --deploy
 
 files:
   - Pipfile
@@ -24,6 +23,9 @@ files:
   - __init__.py
   - visualization.py
   - result.html
+
+postinstall:
+  - pipenv install --system --deploy
 
 entrypoint:
   kind: task
@@ -36,16 +38,14 @@ actions:
       args:
         - visualization_action
     input:
-      - type: string
-        name: filepath_test_dataset
-      - type: string
+      - type: IntermediateResult
         name: filepath_train_dataset
-      - type: string
+      - type: IntermediateResult
+        name: filepath_test_dataset
+      - type: IntermediateResult
         name: filepath_sub_dataset
-      - type: string
-        name: filepath_bigrams_dataset
     output:
-      - type: string
+      - type: IntermediateResult
         name: output
   
 
@@ -55,14 +55,14 @@ actions:
       args:
         - generate_prediction_plot
     input:
-      - type: string
+      - type: IntermediateResult
         name: filepath_test_dataset
-      - type: string
+      - type: IntermediateResult
         name: filepath_sub_dataset
     output:
-      - type: string
+      - type: IntermediateResult
         name: output
-  
+
 
   generate_location_profile:
     command:
@@ -70,12 +70,12 @@ actions:
       args:
         - generate_location_profile
     input:
-      - type: string
+      - type: IntermediateResult
         name: filepath_dataset
       - type: integer
         name: n_top
     output:
-      - type: string
+      - type: IntermediateResult
         name: output
 
   generate_tweets_profile:
@@ -84,12 +84,12 @@ actions:
       args:
         - generate_tweets_profile
     input:
-      - type: string
+      - type: IntermediateResult
         name: filepath_dataset
       - type: integer
         name: n_top
     output:
-      - type: string
+      - type: IntermediateResult
         name: output
 
   generate_keywords_profile:
@@ -98,12 +98,12 @@ actions:
       args:
         - generate_keywords_profile
     input:
-      - type: string
+      - type: IntermediateResult
         name: filepath_dataset
       - type: integer
         name: n_top
     output:
-      - type: string
+      - type: IntermediateResult
         name: output
 
   plot_bigrams_distribution:
@@ -112,10 +112,10 @@ actions:
       args:
         - plot_bigrams_distribution
     input:
-      - type: string
+      - type: IntermediateResult
         name: filepath_dataset
       - type: integer
         name: n_top_bigrams
     output:
-      - type: string
+      - type: IntermediateResult
         name: filepath_image

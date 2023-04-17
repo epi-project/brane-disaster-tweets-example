@@ -106,14 +106,14 @@ actions:
       args:
         - create_submission
     input:
-      - type: string
+      - type: IntermediateResult
         name: filepath_dataset
-      - type: string
+      - type: IntermediateResult
         name: filepath_vectors
-      - type: string
+      - type: IntermediateResult
         name: filepath_model
     output:
-      - type: string
+      - type: IntermediateResult
         name: filepath_submission
 
   'generate_bigrams':
@@ -122,8 +122,8 @@ actions:
       args:
         - generate_bigrams
     input:
-      - type: string
+      - type: IntermediateResult
         name: filepath
     output:
-      - type: string
+      - type: IntermediateResult
         name: filepath

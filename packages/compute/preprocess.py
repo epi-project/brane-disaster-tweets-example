@@ -228,6 +228,7 @@ def generate_bigrams(dataset_path: str) -> str:
         "text": str,
     }
 
+    dataset_path = f"{dataset_path}/dataset.csv"
     if "train" in dataset_path:
         dtypes["target"] = int
 
@@ -238,14 +239,14 @@ def generate_bigrams(dataset_path: str) -> str:
             out.append(f"{b[0]}_{b[1]}")
         return out
 
-    new_path = _make_new_filepath(dataset_path, "bigrams")
+    new_path = "/result/dataset.csv"
     df = pd.read_csv(
-        f"/data/{dataset_path}",
+        dataset_path,
         index_col="id",
         dtype=dtypes,
         converters={"tokens": ast.literal_eval})
 
     df["bigrams"] = df["tokens"].apply(_make_string_bigrams)
-    df.to_csv(f"/data/{new_path}")
+    df.to_csv(new_path)
 
     return new_path

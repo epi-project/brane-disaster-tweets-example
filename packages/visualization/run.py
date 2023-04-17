@@ -8,6 +8,7 @@ import os
 import sys
 
 import pandas as pd
+import json
 import yaml
 
 from visualization import (generate_keywords_profile,
@@ -40,10 +41,9 @@ def print_output(data: dict):
 
 
 def visualization_action(
-    filepath_test_dataset: str,
     filepath_train_dataset: str,
+    filepath_test_dataset: str,
     filepath_sub_dataset: str,
-    filepath_bigrams_dataset: str,
 ) -> int:
     """
     Create an Html that contains all the plots based on the test
@@ -79,7 +79,7 @@ def visualization_action(
     tweets_imgs = tweets_profile(train_data)
     prdict_img = prediction_plot(predict_data)
     bigrams_img = plot_bigrams_distribution(
-        filepath_bigrams_dataset)
+        filepath_train_dataset)
     template_html = codecs.open("./result.html", "r", "utf-8")
 
     result = template_html.read().format(
@@ -99,9 +99,9 @@ def visualization_action(
         disaster_location_top10=location_img, bigrams_img=bigrams_img)
 
     try:
-        with open("/data/result.html", "w") as f:
+        with open("/result/result.html", "w") as f:
             f.write(result)
-        return "/data/result.html"
+        return "/result/result.html"
     except IOError as e:
         return ""
 
@@ -110,61 +110,60 @@ def main():
     command = sys.argv[1]
 
     if command == "visualization_action":
-        filepath_test_dataset = "/data/"+os.environ["FILEPATH_TEST_DATASET"]
-        filepath_train_dataset = "/data/"+os.environ["FILEPATH_TRAIN_DATASET"]
-        filepath_bigrams_dataset = os.environ["FILEPATH_BIGRAMS_DATASET"]
-        filepath_sub_dataset = "/data/"+os.environ["FILEPATH_SUB_DATASET"]
+        filepath_train_dataset = f"{json.loads(os.environ['FILEPATH_TRAIN_DATASET'])}/dataset.csv"
+        filepath_test_dataset = f"{json.loads(os.environ['FILEPATH_TEST_DATASET'])}/dataset.csv"
+        filepath_sub_dataset = f"{json.loads(os.environ['FILEPATH_SUB_DATASET'])}/submission.csv"
 
         output = visualization_action(
-            filepath_test_dataset, filepath_train_dataset,
-            filepath_sub_dataset, filepath_bigrams_dataset)
-        print_output({"output": output})
+            filepath_train_dataset, filepath_test_dataset,
+            filepath_sub_dataset)
+        # print_output({"output": output})
         return
 
     if command == "generate_prediction_plot":
-        filepath_test_dataset = "/data/"+os.environ["FILEPATH_TEST_DATASET"]
-        filepath_sub_dataset = "/data/"+os.environ["FILEPATH_SUB_DATASET"]
+        filepath_test_dataset = f"{json.loads(os.environ['FILEPATH_TEST_DATASET'])}/dataset.csv"
+        filepath_sub_dataset = f"{json.loads(os.environ['FILEPATH_SUB_DATASET'])}/submission.csv"
         output = generate_prediction_plot(
             filepath_test_dataset, filepath_sub_dataset)
-        print_output({"output": output})
+        # print_output({"output": output})
         return
 
     if command == "generate_location_profile":
-        filepath_dataset = "/data/"+os.environ["FILEPATH_DATASET"]
-        n_top = os.environ["N_TOP"]
-        dirs = "/data/location_profile"
+        filepath_dataset = f"{json.loads(os.environ['FILEPATH_DATASET'])}/dataset.csv"
+        n_top = json.loads(os.environ["N_TOP"])
+        dirs = "/result/location_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
         output = generate_location_profile(filepath_dataset, int(n_top))
-        print_output({"output": output})
+        # print_output({"output": output})
         return
 
     if command == "generate_tweets_profile":
-        filepath_dataset = "/data/"+os.environ["FILEPATH_DATASET"]
-        n_top = os.environ["N_TOP"]
-        dirs = "/data/tweets_profile"
+        filepath_dataset = f"{json.loads(os.environ['FILEPATH_DATASET'])}/dataset.csv"
+        n_top = json.loads(os.environ["N_TOP"])
+        dirs = "/result/tweets_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
         output = generate_tweets_profile(filepath_dataset, int(n_top))
-        print_output({"output": output})
+        # print_output({"output": output})
         return
 
     if command == "generate_keywords_profile":
-        filepath_dataset = "/data/"+os.environ["FILEPATH_DATASET"]
-        n_top = os.environ["N_TOP"]
-        dirs = "/data/keywords_profile"
+        filepath_dataset = f"{json.loads(os.environ['FILEPATH_DATASET'])}/dataset.csv"
+        n_top = json.loads(os.environ["N_TOP"])
+        dirs = "/result/keywords_profile"
         if not os.path.exists(dirs):
             os.makedirs(dirs)
         output = generate_keywords_profile(filepath_dataset, int(n_top))
-        print_output({"output": output})
+        # print_output({"output": output})
         return
 
     if command == "plot_bigrams_distribution":
-        filepath_dataset = os.environ["FILEPATH_DATASET"]
-        n_top_bigrams = os.environ["N_TOP_BIGRAMS"]
+        filepath_dataset = f"{json.loads(os.environ['FILEPATH_DATASET'])}/dataset.csv"
+        n_top_bigrams = json.loads(os.environ["N_TOP_BIGRAMS"])
         filepath_image = plot_bigrams_distribution(
             filepath_dataset, int(n_top_bigrams), True)
-        print_output({"filepath_image": filepath_image})
+        # print_output({"filepath_image": filepath_image})
         return
 
 

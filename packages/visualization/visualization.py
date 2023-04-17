@@ -110,7 +110,7 @@ def draw_plot(data: pd.DataFrame, n, path: str, store_file=False):
     return fig_to_base64(fig)
 
 
-def prediction_plot(data: pd.DataFrame, store_file=False):
+def prediction_plot(data: pd.DataFrame, store_file=False) -> str:
     """
     Generate a pie chart based on the submission result.
 
@@ -134,7 +134,7 @@ def prediction_plot(data: pd.DataFrame, store_file=False):
                   textprops={'size': 'x-large'}, startangle=90,
                   explode=(0, 0.1))
     if(store_file):
-        plt.savefig("/data/prediction_plot.png",
+        plt.savefig("/result/prediction_plot.png",
                     dpi=300, bbox_inches="tight")
     return fig_to_base64(fig)
 
@@ -166,27 +166,27 @@ def keywords_profile(data: pd.DataFrame, store_file=False, n_top: int = 10):
     # the overall data word frequency plot and word cloud
     image_tweets_plot = draw_plot(
         data['keyword'], n_top,
-        "/data/keywords_profile/keywords_plot.png", store_file)
+        "/result/keywords_profile/keywords_plot.png", store_file)
     image_tweets_word_cloud = keywords_word_cloud(
-        data, "/data/keywords_profile/keywords_word_cloud.png", store_file)
+        data, "/result/keywords_profile/keywords_word_cloud.png", store_file)
 
     # the disaster data word frequency plot and word cloud
     disaster_data = data[data['target'] == 1]
     image_dis_tweets_plot = draw_plot(
         disaster_data['keyword'], n_top,
-        "/data/keywords_profile/disaster_keywords_plot.png", store_file)
+        "/result/keywords_profile/disaster_keywords_plot.png", store_file)
     image_dis_tweets_word_cloud = keywords_word_cloud(
         disaster_data,
-        "/data/keywords_profile/disaster_keywords_word_cloud.png", store_file)
+        "/result/keywords_profile/disaster_keywords_word_cloud.png", store_file)
 
     # the non-disaster data word frequency plot and word cloud
     non_disaster_data = data[data['target'] == 0]
     image_no_dis_tweets_plot = draw_plot(
         non_disaster_data['keyword'], n_top,
-        "/data/keywords_profile/non_disaster_keywords_plot.png", store_file)
+        "/result/keywords_profile/non_disaster_keywords_plot.png", store_file)
     image_no_dis_tweets_word_cloud = keywords_word_cloud(
         non_disaster_data,
-        "/data/keywords_profile/non_disaster_keywords_word_cloud.png",
+        "/result/keywords_profile/non_disaster_keywords_word_cloud.png",
         store_file)
     return [
         image_tweets_plot,
@@ -225,9 +225,9 @@ def tweets_profile(data: pd.DataFrame, store_file=False, n_top: int = 10):
     image_tweets_plot = draw_plot(
         pd.Series(' '.join(data["tokens"].apply(lambda x: " ".join(x)))
                   .split()), n_top,
-        "/data/tweets_profile/tweets_plot.png", store_file)
+        "/result/tweets_profile/tweets_plot.png", store_file)
     image_tweets_word_cloud = tweets_wordcloud(
-        data, "/data/tweets_profile/tweets_word_cloud.png", store_file)
+        data, "/result/tweets_profile/tweets_word_cloud.png", store_file)
 
     # the disaster data word frequency plot and word cloud
     disaster_data = data[data['target'] == 1]
@@ -235,9 +235,9 @@ def tweets_profile(data: pd.DataFrame, store_file=False, n_top: int = 10):
         pd.Series(' '.join(disaster_data["tokens"]
                            .apply(lambda x: " ".join(x)))
                   .split()), n_top,
-        "/data/tweets_profile/disaster_tweets_plot.png", store_file)
+        "/result/tweets_profile/disaster_tweets_plot.png", store_file)
     image_dis_tweets_word_cloud = tweets_wordcloud(
-        disaster_data, "/data/tweets_profile/disaster_tweets_word_cloud.png",
+        disaster_data, "/result/tweets_profile/disaster_tweets_word_cloud.png",
         store_file)
 
     # the non-disaster data word frequency plot and word cloud
@@ -245,10 +245,10 @@ def tweets_profile(data: pd.DataFrame, store_file=False, n_top: int = 10):
     image_no_dis_tweets_plot = draw_plot(
         pd.Series(' '.join(non_disaster_data["tokens"]
                            .apply(lambda x: " ".join(x))).split()),
-        n_top, "/data/tweets_profile/non_disaster_tweets_plot.png", store_file)
+        n_top, "/result/tweets_profile/non_disaster_tweets_plot.png", store_file)
     image_no_dis_tweets_word_cloud = tweets_wordcloud(
         non_disaster_data,
-        "/data/tweets_profile/non_disaster_tweets_word_cloud.png", store_file)
+        "/result/tweets_profile/non_disaster_tweets_word_cloud.png", store_file)
     return [
         image_tweets_plot,
         image_tweets_word_cloud,
@@ -327,7 +327,7 @@ def location_profile(data: pd.DataFrame, store_file=False, n_top=10):
         lambda x: x if (x not in location_map) else location_map.get(x))
 
     return draw_plot(loc_disaster, n_top,
-                     "/data/location_profile/loc_disaster.png", store_file)
+                     "/result/location_profile/loc_disaster.png", store_file)
 
 
 def fig_to_base64(fig):
@@ -382,7 +382,7 @@ def plot_bigrams_distribution(
     }
 
     df = pd.read_csv(
-        f"/data/{dataset_path}",
+        dataset_path,
         index_col="id",
         dtype=dtypes,
         converters={
@@ -411,10 +411,10 @@ def plot_bigrams_distribution(
         return fig_to_base64(fig)
     else:
         plt.savefig(
-            "/data/bigrams_distribution.png",
+            "/result/bigrams_distribution.png",
             dpi=300, bbox_inches="tight")
         plt.close()
-        return "bigrams_distribution.png"
+        return "/result/bigrams_distribution.png"
 
 
 def generate_prediction_plot(
@@ -471,7 +471,7 @@ def generate_location_profile(dataset_path: str, n_top: int = 10) -> str:
                        converters={"tokens": ast.literal_eval})
     location_profile(data, True, n_top)
 
-    return "/data/location_profile"
+    return "/result/location_profile"
 
 
 def generate_tweets_profile(dataset_path: str, n_top: int = 10) -> str:
@@ -498,7 +498,7 @@ def generate_tweets_profile(dataset_path: str, n_top: int = 10) -> str:
                        converters={"tokens": ast.literal_eval})
     tweets_profile(data, True, n_top)
 
-    return "/data/tweets_profile"
+    return "/result/tweets_profile"
 
 
 def generate_keywords_profile(dataset_path: str, n_top: int = 10) -> str:
@@ -525,4 +525,4 @@ def generate_keywords_profile(dataset_path: str, n_top: int = 10) -> str:
                        converters={"tokens": ast.literal_eval})
     keywords_profile(data, True, n_top)
 
-    return "/data/keywords_profile"
+    return "/result/keywords_profile"

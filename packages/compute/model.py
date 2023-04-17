@@ -88,22 +88,21 @@ def create_submission(
     }
 
     dataset = pd.read_csv(
-        f"/data/{dataset_path}",
+        dataset_path,
         index_col="id",
         dtype=dtypes,
         converters={"tokens": ast.literal_eval})
 
-    with open(f"/data/{vectors_path}", "rb") as f:
+    with open(vectors_path, "rb") as f:
         vectors = pickle.load(f)
-    with open(f"/data/{model_path}", "rb") as f:
+    with open(model_path, "rb") as f:
         model = pickle.load(f)
 
     submission = pd.DataFrame()
     submission['id'] = dataset.index.to_list()
     submission['target'] = model.predict(vectors)
 
-    timestamp = datetime.datetime.utcnow()
-    filename = f"submission_{timestamp}.csv"
-    submission.to_csv(f"/data/{filename}", index=False)
+    filename = f"/result/submission.csv"
+    submission.to_csv(filename, index=False)
 
     return filename

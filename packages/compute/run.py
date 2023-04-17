@@ -80,12 +80,12 @@ def main():
         return
 
     if command == "create_submission":
-        filepath_dataset = os.environ["FILEPATH_DATASET"]
-        filepath_vectors = os.environ["FILEPATH_VECTORS"]
-        filepath_model = os.environ["FILEPATH_MODEL"]
+        filepath_dataset = f"{json.loads(os.environ['FILEPATH_DATASET'])}/dataset.csv"
+        filepath_vectors = f"{json.loads(os.environ['FILEPATH_VECTORS'])}/test_vectors.pickle"
+        filepath_model = f"{json.loads(os.environ['FILEPATH_MODEL'])}/model.pickle"
         filepath_submission = create_submission(
             filepath_dataset, filepath_vectors, filepath_model)
-        print_output({"filepath_submission": filepath_submission})
+        # print_output({"filepath_submission": filepath_submission})
         return
 
     filepath_in = json.loads(os.environ["FILEPATH"])
