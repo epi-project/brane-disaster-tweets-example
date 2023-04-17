@@ -1,7 +1,7 @@
-// PIPELINE 2
+// PIPELINE
 //   by Tim Müller
 //
-// Based on work by Andrea Marino and 
+// Based on work by Andrea Marino and Jingye Wang.
 //
 // A more up-to-date version of the original pipeline defined in 'pipeline.bs'.
 // Specifically, carries the result of functions in the IntermediateResults as variables.

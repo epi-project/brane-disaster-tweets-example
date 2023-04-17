@@ -45,3 +45,7 @@ brane run pipeline.bs
 ```
 The following picture shows an example that our package uses the pipeline.bs to run the whole pipeline in the Kubernetes cluster.
 ![Example Runs On Kubernetes cluster](WX20220603-195559.png)  
+
+
+## Attribution
+This repository is the up-to-date version of the work of Andrea Marino and Jingye Wang, with the aim to implement exactly the same as they have done for a newer version of the framework. Their original repository can be found [here](https://github.com/marinoandrea/disaster-tweets-brane).
