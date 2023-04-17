@@ -18,7 +18,7 @@ We also include a `github.yml` specification which defines an OpenAPI container 
 Each package can be individually imported with the following command:
 
 ```bash
-brane import marinoandrea/disaster-tweets-brane -c packages/<PACKAGE_NAME>
+brane import epi-project/brane-disaster-tweets-example -c packages/<PACKAGE_NAME>/container.yml
 ```
 
 However, we also provide a shell script for convenience. The user can clone the repository and simply run `./build.sh all` to build all of our packages. Additionally, you also can run the following commands to build a specific package.
