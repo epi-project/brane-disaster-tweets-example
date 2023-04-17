@@ -2,16 +2,14 @@
 
 [![DOI](https://zenodo.org/badge/491528415.svg)](https://zenodo.org/badge/latestdoi/491528415)
 ![Compute Package](https://github.com/marinoandrea/disaster-tweets-brane/actions/workflows/compute-package.yaml/badge.svg)
-![Utils Package](https://github.com/marinoandrea/disaster-tweets-brane/actions/workflows/utils-package.yaml/badge.svg)
 ![Visualization Package](https://github.com/marinoandrea/disaster-tweets-brane/actions/workflows/visualization-package.yaml/badge.svg)
 
 ## Introduction
 
-This project features an implementation of an NLP pipeline for [the disaster tweets Kaggle competition](https://www.kaggle.com/competitions/nlp-getting-started/overview/description) using the [Brane](https://github.com/epi-project/brane) framework. The implementation is divided into the following Brane packages which can be imported individually and used in other workflows: `compute`, `visualization`, and `utils`.
+This project features an implementation of an NLP pipeline for [the disaster tweets Kaggle competition](https://www.kaggle.com/competitions/nlp-getting-started/overview/description) using the [Brane](https://github.com/epi-project/brane) framework. The implementation is divided into the following Brane packages which can be imported individually and used in other workflows: `compute` and `visualization`.
 
 - `compute` exposes utilities for preprocessing data, training a classifier, and generating a valid submission file for the challenge.
 - `visualization` provides functions to generate plots and charts based on the dataset.
-- `utils` contains generic utility functions and specifically allows for downloading the dataset at runtime.
 
 We also include a `github.yml` specification which defines an OpenAPI container that exposes a function to download arbitrary files from GitHub repositories.
 
@@ -30,8 +28,6 @@ However, we also provide a shell script for convenience. The user can clone the 
 ./build.sh compute
 # build the visualization package
 ./build.sh visualization
-# build the utils package
-./build.sh utils
 ```
 
 Of course, you can always navigate to the package directory and run the following command to build the brane package.
@@ -42,12 +38,10 @@ brane build container.yml
 
 ## Run
 
-Our pipeline implementation can be executed locally or on a multi-node Kubernetes cluster by simply running the following command in the root folder of the project:
+Our pipeline implementation can be executed locally by simply running the following command in the root folder of the project:
 
 ```bash
-brane run -d <DFS_FOLDER> pipeline.bs
+brane run pipeline.bs
 ```
 The following picture shows an example that our package uses the pipeline.bs to run the whole pipeline in the Kubernetes cluster.
 ![Example Runs On Kubernetes cluster](WX20220603-195559.png)  
-
-NOTE: Brane may print some warnings about serialization issues to the console. However, the pipeline can run till the end without issues.

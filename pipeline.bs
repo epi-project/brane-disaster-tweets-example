@@ -1,97 +1,72 @@
-import nlp_compute;
-import nlp_visualization;
-import nlp_utils;
+// PIPELINE 2
+//   by Tim Müller
+//
+// Based on work by Andrea Marino and 
+//
+// A more up-to-date version of the original pipeline defined in 'pipeline.bs'.
+// Specifically, carries the result of functions in the IntermediateResults as variables.
+//
 
-let repo_owner := "marinoandrea";
-let repo_name := "disaster-tweets-brane";
 
-// repository dataset locations
-let repo_dataset_filepath_test := "data/test.csv";
-let repo_dataset_filepath_train := "data/train.csv";
+//////// TRAINING ////////
+import compute;
+import visualization;
 
-// distributed filesystem dataset locations excluding 'data' prefix
-let dfs_dataset_filepath_test := "test.csv";
-let dfs_dataset_filepath_train := "train.csv";
+println("Cleaning dataset...");
+let train_clean := clean(new Data{ name := "nlp_train" });
+let test_clean  := clean(new Data{ name := "nlp_test" });
 
-//  distributed filesystem vectors locations
-let dfs_vectors_filepath_test := "test_vectors.pickle";
-let dfs_vectors_filepath_train := "train_vectors.pickle";
+println("Tokenizing dataset...");
+let train := tokenize(train_clean);
+let test  := tokenize(test_clean);
 
-// download and store dataset in the distributed filesystem
-print("Downloading the dataset files...");
-if (download(repo_owner, repo_name, repo_dataset_filepath_train, dfs_dataset_filepath_train) != 0) { 
-    // TODO: handle failure
-    print("Train dataset download failed.");
-}
-if (download(repo_owner, repo_name, repo_dataset_filepath_test, dfs_dataset_filepath_test) != 0) { 
-    // TODO: handle failure
-    print("Test dataset download failed.");
-}
+println("Removing stopwords from dataset...");
+train := remove_stopwords(train);
+test  := remove_stopwords(test);
 
-// cleaning the dataset text
-print("Cleaning the raw tweets text...");
-let path_dataset_clean_train := clean(dfs_dataset_filepath_train);
-let path_dataset_clean_test := clean(dfs_dataset_filepath_test);
+println("Performing feature vectorization...");
+let vectors := create_vectors(train, test);
 
-// obtain tokens from raw text
-print("Performing tokenization...");
-let path_dataset_tokenized_train := tokenize(path_dataset_clean_train);
-let path_dataset_tokenized_test := tokenize(path_dataset_clean_test);
+println("Training model...");
+let model := train_model(train, vectors);
+commit_result("nlp_model", model);
 
-// remove english stopwords
-print("Removing stopwords...");
-let path_dataset_nostopwords_train := remove_stopwords(path_dataset_tokenized_train);
-let path_dataset_nostopwords_test := remove_stopwords(path_dataset_tokenized_test);
 
-// create vectorized versions of the datasets
-print("Performing feature vectorization...");
-let vectors := create_vectors(
-    path_dataset_nostopwords_train, 
-    path_dataset_nostopwords_test, 
-    dfs_vectors_filepath_train,
-    dfs_vectors_filepath_test);
 
-// train the classifier
-print("Training the model...");
-let path_model := train_model(path_dataset_nostopwords_train, dfs_vectors_filepath_train);
+//////// TESTING ////////
+println("Generating bigrams...");
+train := generate_bigrams(train);
+test  := generate_bigrams(test);
 
-// create a submission
-print("Classifying tweets...");
-let path_submission := create_submission(
-    path_dataset_nostopwords_test,
-    dfs_vectors_filepath_test, 
-    path_model);
+print("Classying tweets...");
+// This is called a submission, because it's for a Kaggle challenge - but it's just a set of classifications.
+let submission := create_submission(test, vectors, model);
 
-// creating bigrams information
-print("Generating bigrams...");
-let path_dataset_bigrams_train := generate_bigrams(path_dataset_nostopwords_train);
+// let n_top_bigrams := 15;
+// print("Plotting bigrams (top "); print(n_top_bigrams); println(")...");
+// let bigram_plot := plot_bigrams_distribution(train, n_top_bigrams);
+// commit_result("bigram_plot", bigram_plot);
 
-// plotting bigrams information
-print("Plotting bigrams data...");
-plot_bigrams_distribution(path_dataset_bigrams_train, 15);
+// println("Plotting predictions...");
+// let pred_plot := generate_prediction_plot(test_clean, submission);
+// commit_result("prediction_plot", pred_plot);
 
-// plotting prediction information
-print("Plotting prediction data...");
-generate_prediction_plot(path_dataset_clean_test, path_submission);
+// println("Plotting location information...");
+// let loc_plot := generate_location_profile(train, 10);
+// commit_result("location_plot", loc_plot);
 
-// plotting locations information
-print("Plotting locations data...");
-generate_location_profile(path_dataset_nostopwords_train, 10);
+// println("Plotting tweet information...");
+// let tweet_plot := generate_tweets_profile(train, 15);
+// commit_result("tweet_plot", tweet_plot);
 
-// plotting tweets text information
-print("Plotting tweets text data...");
-generate_tweets_profile(path_dataset_nostopwords_train, 15);
+// println("Plotting keyword information...");
+// let keyword_plot := generate_keywords_profile(train, 15);
+// commit_result("keyword_plot", keyword_plot);
 
-// plotting keywords information
-print("Plotting keywords data...");
-generate_keywords_profile(path_dataset_nostopwords_train, 15);
-
-// generate the visualization
-print("Generating visualizations...");
-let result := visualization_action(
-    path_dataset_nostopwords_test,
-    path_dataset_nostopwords_train,
-    path_submission,
-    path_dataset_bigrams_train);
-
-print("Done");
+println("Generating interactive plot...");
+let plot := visualization_action(
+    train,
+    test,
+    submission
+);
+return commit_result("plot_interface", plot);
