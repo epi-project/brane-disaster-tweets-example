@@ -18,22 +18,33 @@ We also include a `github.yml` specification which defines an OpenAPI container 
 Each package can be individually imported with the following command:
 
 ```bash
-brane import epi-project/brane-disaster-tweets-example -c packages/<PACKAGE_NAME>/container.yml
+brane package import -c epi-project/brane-disaster-tweets-example packages/<PACKAGE_NAME>/container.yml
 ```
 
-However, we also provide a shell script for convenience. The user can clone the repository and simply run `./build.sh all` to build all of our packages. Additionally, you also can run the following commands to build a specific package.
+However, we also provide a shell script for convenience. The user can clone the repository and simply run `./build-package.sh` to build all of our packages. Additionally, you also can run the following commands to build a specific package.
 
 ```bash
 # build the computation package
-./build.sh compute
+./build-package.sh compute
 # build the visualization package
-./build.sh visualization
+./build-package.sh visualization
 ```
 
 Of course, you can always navigate to the package directory and run the following command to build the brane package.
 
+```bash
+brane package build container.yml
 ```
-brane build container.yml
+
+## Data
+
+Besides packages, we also need to build the datasets used by the workflow. This can be done using the included `./build-data.sh` script to build the training and testing dataset.
+
+```bash
+# For the training dataset
+brane data build ./data/train/data.yml
+# For the testing dataset
+brane data build ./data/test/data.yml
 ```
 
 ## Run
@@ -41,7 +52,7 @@ brane build container.yml
 Our pipeline implementation can be executed locally by simply running the following command in the root folder of the project:
 
 ```bash
-brane run pipeline.bs
+brane workflow run pipeline.bs
 ```
 The following picture shows an example that our package uses the pipeline.bs to run the whole pipeline in the Kubernetes cluster.
 ![Example Runs On Kubernetes cluster](WX20220603-195559.png)  

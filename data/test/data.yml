@@ -12,6 +12,5 @@ owners:
 description: Training set for NLP distaster tweets.
 
 # This is the real magic: we tell Brane we mean this file
-access:
-  kind: file
+access: !file
   path: ./data

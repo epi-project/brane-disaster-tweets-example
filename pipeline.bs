@@ -13,7 +13,8 @@ import visualization;
 
 
 // Change this location according to your instance
-on "localhost" {
+#[on("localhost")]
+{
     //////// TRAINING ////////
     println("Cleaning dataset...");
     let train_clean := clean(new Data{ name := "nlp_train" });
