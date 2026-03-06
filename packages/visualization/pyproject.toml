@@ -1,12 +1,13 @@
 [project]
 name = "visualization"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = "==3.9"
+description = ""
+readme = "../README.md"
+requires-python = "~=3.14.0"
 dependencies = [
-    "pandas",
     "matplotlib",
-    "wordcloud",
+    "pandas",
     "seaborn",
+    "wordcloud",
+    "pyyaml",
 ]

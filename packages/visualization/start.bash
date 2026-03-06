@@ -1,2 +1,2 @@
 #!/bin/bash
-pipx run uv run ./run.py
+pipx run uv run ./run.py $@

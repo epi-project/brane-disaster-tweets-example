@@ -17,23 +17,26 @@ dependencies:
 
 install:
   - apt update && apt upgrade -y
-  - apt install pipenv -y
+  - apt install -y pipx
+  - pipx install uv
 
 files:
-  - Pipfile
-  - Pipfile.lock
+  - pyproject.toml
+  - uv.lock
   - __init__.py
   - run.py
-  - model.py 
+  - model.py
   - preprocess.py
+  - start.bash
 
 unpack:
-  - pipenv install --system --deploy
-  - python3 -c "import nltk; nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
+  - # This sync needs to be done during the unpack stage as the files are not available during install
+  - pipx run uv sync
+  - pipx run uv run python -c "import nltk; nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
 
 entrypoint:
   kind: task
-  exec: run.py
+  exec: start.bash
 
 actions:
   'clean':

@@ -13,23 +13,27 @@ dependencies:
   - python3-yaml
 
 install:
-  - apt update && apt upgrade -y 
-  - apt install -y pipenv
+  - apt update && apt upgrade -y
+  - apt install -y pipx
+  - pipx install uv
 
 files:
-  - Pipfile
-  - Pipfile.lock
-  - run.py
+  - pyproject.toml
+  - uv.lock
   - __init__.py
+  - run.py
   - visualization.py
+  - start.bash
   - result.html
 
-postinstall:
-  - pipenv install --system --deploy
+unpack:
+  - # This sync needs to be done during the unpack stage as the files are not available during install
+  - pipx run uv sync
 
 entrypoint:
   kind: task
-  exec: run.py
+  exec: start.bash
+
 
 actions:
   visualization_action:
@@ -47,7 +51,6 @@ actions:
     output:
       - type: IntermediateResult
         name: output
-  
 
   generate_prediction_plot:
     command:
